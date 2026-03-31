@@ -11,7 +11,9 @@ export interface Pet {
   id: string
   name: string
   species: string
-  age: number
+  age_years: number
+  age_months: number
+  photo_url: string | null
   owner_id: string
   created_at: string
 }
