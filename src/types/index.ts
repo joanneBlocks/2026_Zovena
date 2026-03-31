@@ -16,4 +16,5 @@ export interface Pet {
   photo_url: string | null
   owner_id: string
   created_at: string
+  profiles?: { email: string }
 }
