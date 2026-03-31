@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { getPets, createPet, deletePet } from '../api/pets'
+import { getPets, createPet, deletePet, uploadPetPhoto } from '../api/pets'
 import type { Pet } from '../types/index'
 
 const colors = {
@@ -30,6 +30,8 @@ export default function Pets() {
   const [species, setSpecies] = useState('')
   const [ageYears, setAgeYears] = useState('')
   const [ageMonths, setAgeMonths] = useState('')
+  const [photo, setPhoto] = useState<File | null>(null)
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
@@ -48,6 +50,16 @@ export default function Pets() {
     }
   }
 
+  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    const file = e.target.files?.[0] ?? null
+    setPhoto(file)
+    if (file) {
+      setPhotoPreview(URL.createObjectURL(file))
+    } else {
+      setPhotoPreview(null)
+    }
+  }
+
   async function handleCreatePet(e: React.FormEvent): Promise<void> {
     e.preventDefault()
     if (!profile) return
@@ -55,18 +67,27 @@ export default function Pets() {
     setError('')
 
     try {
+      let photoUrl: string | undefined
+
+      if (photo) {
+        photoUrl = await uploadPetPhoto(photo, profile.id)
+      }
+
       const newPet = await createPet(
         name,
         species,
         parseInt(ageYears) || 0,
         parseInt(ageMonths) || 0,
-        profile.id
+        profile.id,
+        photoUrl
       )
       setPets(prev => [newPet, ...prev])
       setName('')
       setSpecies('')
       setAgeYears('')
       setAgeMonths('')
+      setPhoto(null)
+      setPhotoPreview(null)
       setShowForm(false)
     } catch (err) {
       setError('Failed to create pet.')
@@ -91,6 +112,11 @@ export default function Pets() {
     rabbit: '🐇',
     fish: '🐟',
     hamster: '🐹',
+    'guinea pig': '🐹',
+    hedgehog: '🦔',
+    gecko: '🦎',
+    chinchilla: '🐭',
+    'sugar glider': '🐿️',
     other: '🐾',
   }
 
@@ -104,6 +130,8 @@ export default function Pets() {
     if (months === 0) return `${years} ${years === 1 ? 'year' : 'years'} old`
     return `${years} ${years === 1 ? 'year' : 'years'}, ${months} ${months === 1 ? 'month' : 'months'} old`
   }
+
+  const pageTitle = profile?.role === 'vet' ? '🏥 All Pets' : '🐾 My Pets'
 
   return (
     <div className="min-h-screen p-6" style={{ backgroundColor: colors.bg }}>
@@ -119,7 +147,7 @@ export default function Pets() {
             ← Back
           </button>
           <h1 className="text-xl font-bold" style={{ color: colors.textPrimary }}>
-            🐾 My Pets
+            {pageTitle}
           </h1>
           {profile?.role === 'owner' && (
             <button
@@ -176,6 +204,11 @@ export default function Pets() {
                 <option value="rabbit">🐇 Rabbit</option>
                 <option value="fish">🐟 Fish</option>
                 <option value="hamster">🐹 Hamster</option>
+                <option value="guinea pig">🐹 Guinea Pig</option>
+                <option value="hedgehog">🦔 Hedgehog</option>
+                <option value="gecko">🦎 Gecko</option>
+                <option value="chinchilla">🐭 Chinchilla</option>
+                <option value="sugar glider">🐿️ Sugar Glider</option>
                 <option value="other">🐾 Other</option>
               </select>
 
@@ -203,7 +236,34 @@ export default function Pets() {
                 />
               </div>
 
-              {error && <p className="text-sm" style={{ color: colors.error }}>{error}</p>}
+              {/* Photo upload */}
+              <div>
+                <label
+                  className="block text-sm mb-1"
+                  style={{ color: colors.textSecondary }}
+                >
+                  Pet photo (optional)
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                  className="w-full text-sm"
+                  style={{ color: colors.textSecondary }}
+                />
+                {photoPreview && (
+                  <img
+                    src={photoPreview}
+                    alt="Preview"
+                    className="mt-3 w-24 h-24 rounded-xl object-cover border"
+                    style={{ borderColor: colors.border }}
+                  />
+                )}
+              </div>
+
+              {error && (
+                <p className="text-sm" style={{ color: colors.error }}>{error}</p>
+              )}
 
               <button
                 type="submit"
@@ -211,7 +271,7 @@ export default function Pets() {
                 className="w-full text-white py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50"
                 style={{ backgroundColor: colors.indigo }}
               >
-                {submitting ? 'Adding...' : 'Add Pet'}
+                {submitting ? 'Uploading...' : 'Add Pet'}
               </button>
             </form>
           </div>
@@ -219,7 +279,9 @@ export default function Pets() {
 
         {/* Pet List */}
         {loading ? (
-          <p className="text-center text-sm" style={{ color: colors.textSecondary }}>Loading pets...</p>
+          <p className="text-center text-sm" style={{ color: colors.textSecondary }}>
+            Loading pets...
+          </p>
         ) : pets.length === 0 ? (
           <div
             className="rounded-2xl p-8 text-center border"
@@ -240,12 +302,31 @@ export default function Pets() {
                 style={{ backgroundColor: colors.card, borderColor: colors.border }}
               >
                 <div className="flex items-center gap-4">
-                  <span className="text-3xl">{getEmoji(pet.species)}</span>
+                  {pet.photo_url ? (
+                    <img
+                      src={pet.photo_url}
+                      alt={pet.name}
+                      className="w-14 h-14 rounded-xl object-cover border"
+                      style={{ borderColor: colors.border }}
+                    />
+                  ) : (
+                    <span className="text-3xl">{getEmoji(pet.species)}</span>
+                  )}
                   <div>
-                    <p className="font-semibold" style={{ color: colors.textPrimary }}>{pet.name}</p>
+                    <p className="font-semibold" style={{ color: colors.textPrimary }}>
+                      {pet.name}
+                    </p>
                     <p className="text-sm capitalize" style={{ color: colors.textSecondary }}>
                       {pet.species} · {formatAge(pet.age_years, pet.age_months)}
                     </p>
+                    {profile?.role === 'vet' && pet.profiles?.email && (
+                      <p
+                        className="text-xs mt-1"
+                        style={{ color: colors.teal }}
+                      >
+                        Owner: {pet.profiles.email}
+                      </p>
+                    )}
                   </div>
                 </div>
                 {profile?.role === 'owner' && (
