@@ -4,7 +4,7 @@ import type { Pet } from '../types/index'
 export async function getPets(): Promise<Pet[]> {
   const { data, error } = await supabase
     .from('pets')
-    .select('*')
+    .select('*, profiles(email)')
     .order('created_at', { ascending: false })
 
   if (error) throw error
@@ -29,7 +29,7 @@ export async function createPet(
       owner_id: ownerId,
       photo_url: photoUrl ?? null,
     })
-    .select()
+    .select('*, profiles(email)')
     .single()
 
   if (error) throw error
