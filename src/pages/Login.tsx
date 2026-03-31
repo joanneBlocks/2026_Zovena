@@ -4,6 +4,17 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import type { Role } from '../types/index'
 
+const colors = {
+  indigo: '#4F46E5',
+  teal: '#14B8A6',
+  bg: '#F9FAFB',
+  card: '#FFFFFF',
+  textPrimary: '#111827',
+  textSecondary: '#6B7280',
+  border: '#E5E7EB',
+  error: '#EF4444',
+}
+
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -32,10 +43,14 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold text-gray-800 mb-1">🐾 Zovena</h1>
-        <p className="text-gray-500 mb-6 text-sm">Pet Wellness Platform</p>
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.bg }}>
+      <div className="p-8 rounded-2xl shadow-md w-full max-w-md border" style={{ backgroundColor: colors.card, borderColor: colors.border }}>
+
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-2xl">🐾</span>
+          <h1 className="text-2xl font-bold" style={{ color: colors.textPrimary }}>Zovena</h1>
+        </div>
+        <p className="mb-6 text-sm" style={{ color: colors.textSecondary }}>Pet Wellness Platform</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
@@ -43,7 +58,8 @@ export default function Login() {
             placeholder="Email"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            className="w-full border rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
+            style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
             required
           />
           <input
@@ -51,24 +67,26 @@ export default function Login() {
             placeholder="Password"
             value={password}
             onChange={e => setPassword(e.target.value)}
-            className="w-full border rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
+            style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
             required
           />
 
           {isSignUp && (
             <div>
-              <p className="text-sm text-gray-600 mb-2">I am a...</p>
+              <p className="text-sm mb-2" style={{ color: colors.textSecondary }}>I am a...</p>
               <div className="flex gap-3">
                 {(['owner', 'vet'] as Role[]).map(r => (
                   <button
                     type="button"
                     key={r}
                     onClick={() => setRole(r)}
-                    className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-colors ${
-                      role === r
-                        ? 'bg-indigo-600 text-white border-indigo-600'
-                        : 'text-gray-600 border-gray-300 hover:border-indigo-400'
-                    }`}
+                    className="flex-1 py-2 rounded-lg border text-sm font-medium transition-colors"
+                    style={{
+                      backgroundColor: role === r ? colors.indigo : 'transparent',
+                      color: role === r ? '#fff' : colors.textSecondary,
+                      borderColor: role === r ? colors.indigo : colors.border,
+                    }}
                   >
                     {r === 'owner' ? '🏠 Pet Owner' : '🩺 Veterinarian'}
                   </button>
@@ -77,25 +95,30 @@ export default function Login() {
             </div>
           )}
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && (
+            <p className="text-sm" style={{ color: colors.error }}>{error}</p>
+          )}
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
+            className="w-full text-white py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-90"
+            style={{ backgroundColor: colors.indigo }}
           >
             {isSignUp ? 'Create account' : 'Sign in'}
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-4">
+        <p className="text-center text-sm mt-4" style={{ color: colors.textSecondary }}>
           {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
           <button
-            onClick={() => setIsSignUp(!isSignUp)}
-            className="text-indigo-600 font-medium hover:underline"
+            onClick={() => setIsSignUp(prev => !prev)}
+            className="font-medium hover:underline"
+            style={{ color: colors.indigo }}
           >
             {isSignUp ? 'Sign in' : 'Sign up'}
           </button>
         </p>
+
       </div>
     </div>
   )
