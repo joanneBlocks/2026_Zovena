@@ -2,6 +2,17 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 
+const colors = {
+  indigo: '#4F46E5',
+  teal: '#14B8A6',
+  bg: '#F9FAFB',
+  card: '#FFFFFF',
+  textPrimary: '#111827',
+  textSecondary: '#6B7280',
+  border: '#E5E7EB',
+  error: '#EF4444',
+}
+
 export default function Dashboard() {
   const { profile } = useAuth()
   const navigate = useNavigate()
@@ -12,30 +23,40 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-lg mx-auto bg-white rounded-2xl shadow-md p-6">
+    <div className="min-h-screen p-6" style={{ backgroundColor: colors.bg }}>
+      <div className="max-w-lg mx-auto rounded-2xl shadow-md p-6 border" style={{ backgroundColor: colors.card, borderColor: colors.border }}>
+
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-xl font-bold text-gray-800">🐾 Zovena</h1>
+          <div className="flex items-center gap-2">
+            <span className="text-xl">🐾</span>
+            <h1 className="text-xl font-bold" style={{ color: colors.textPrimary }}>Zovena</h1>
+          </div>
           <button
             onClick={handleLogout}
-            className="text-sm text-gray-500 hover:text-red-500"
+            className="text-sm transition-opacity hover:opacity-70"
+            style={{ color: colors.textSecondary }}
           >
             Sign out
           </button>
         </div>
-        <p className="text-gray-600">
-          Welcome back, <span className="font-medium">{profile?.email}</span>
-        </p>
-        <span
-          className={`inline-block mt-2 px-3 py-1 rounded-full text-xs font-medium ${
-            profile?.role === 'vet'
-              ? 'bg-blue-100 text-blue-700'
-              : 'bg-green-100 text-green-700'
-          }`}
+
+        <p className="text-sm" style={{ color: colors.textSecondary }}>Welcome back,</p>
+        <p className="font-medium" style={{ color: colors.textPrimary }}>{profile?.email}</p>
+
+        <div
+          className="inline-flex items-center gap-1 mt-3 px-3 py-1 rounded-full text-xs font-medium text-white"
+          style={{ backgroundColor: profile?.role === 'vet' ? colors.teal : colors.indigo }}
         >
-          {profile?.role === 'vet' ? '🩺 Veterinarian' : '🏠 Pet Owner'}
-        </span>
-        <p className="text-gray-400 text-sm mt-4">Pet profiles coming in Week 2.</p>
+          <span>{profile?.role === 'vet' ? '🩺' : '🏠'}</span>
+          <span>{profile?.role === 'vet' ? 'Veterinarian' : 'Pet Owner'}</span>
+        </div>
+
+        <div className="mt-6 p-4 rounded-xl border" style={{ backgroundColor: colors.bg, borderColor: colors.border }}>
+          <p className="text-sm" style={{ color: colors.textSecondary }}>
+            🐕 Pet profiles coming in Week 2.
+          </p>
+        </div>
+
       </div>
     </div>
   )
