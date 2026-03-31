@@ -33,7 +33,7 @@ export default function Dashboard() {
           </div>
           <button
             onClick={handleLogout}
-            className="text-sm transition-opacity hover:opacity-70"
+            className="text-sm transition-colors hover:opacity-70"
             style={{ color: colors.textSecondary }}
           >
             Sign out
@@ -51,10 +51,33 @@ export default function Dashboard() {
           <span>{profile?.role === 'vet' ? 'Veterinarian' : 'Pet Owner'}</span>
         </div>
 
-        <div className="mt-6 p-4 rounded-xl border" style={{ backgroundColor: colors.bg, borderColor: colors.border }}>
-          <p className="text-sm" style={{ color: colors.textSecondary }}>
-            🐕 Pet profiles coming in Week 2.
-          </p>
+        <div className="mt-6 space-y-3">
+          <button
+            onClick={() => navigate('/pets')}
+            className="w-full p-4 rounded-xl border text-left transition-opacity hover:opacity-80"
+            style={{ backgroundColor: colors.bg, borderColor: colors.border }}
+          >
+            <p className="font-medium" style={{ color: colors.textPrimary }}>🐾 Pet Profiles</p>
+            <p className="text-sm mt-1" style={{ color: colors.textSecondary }}>
+              {profile?.role === 'owner' ? 'View and manage your pets' : 'View all registered pets'}
+            </p>
+          </button>
+
+          <div
+            className="w-full p-4 rounded-xl border text-left opacity-40"
+            style={{ backgroundColor: colors.bg, borderColor: colors.border }}
+          >
+            <p className="font-medium" style={{ color: colors.textPrimary }}>📋 Medical Records</p>
+            <p className="text-sm mt-1" style={{ color: colors.textSecondary }}>Coming in Week 3</p>
+          </div>
+
+          <div
+            className="w-full p-4 rounded-xl border text-left opacity-40"
+            style={{ backgroundColor: colors.bg, borderColor: colors.border }}
+          >
+            <p className="font-medium" style={{ color: colors.textPrimary }}>📝 Audit Log</p>
+            <p className="text-sm mt-1" style={{ color: colors.textSecondary }}>Coming in Week 4</p>
+          </div>
         </div>
 
       </div>
