@@ -1,7 +1,7 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { Role } from '../types'
+import type { Role } from '../types/index'
 
 interface RoleGuardProps {
   children: ReactNode
