@@ -14,17 +14,46 @@ export async function getPets(): Promise<Pet[]> {
 export async function createPet(
   name: string,
   species: string,
-  age: number,
-  ownerId: string
+  ageYears: number,
+  ageMonths: number,
+  ownerId: string,
+  photoUrl?: string
 ): Promise<Pet> {
   const { data, error } = await supabase
     .from('pets')
-    .insert({ name, species, age, owner_id: ownerId })
+    .insert({
+      name,
+      species,
+      age_years: ageYears,
+      age_months: ageMonths,
+      owner_id: ownerId,
+      photo_url: photoUrl ?? null,
+    })
     .select()
     .single()
 
   if (error) throw error
   return data
+}
+
+export async function uploadPetPhoto(
+  file: File,
+  ownerId: string
+): Promise<string> {
+  const fileExt = file.name.split('.').pop()
+  const fileName = `${ownerId}/${Date.now()}.${fileExt}`
+
+  const { error } = await supabase.storage
+    .from('pet-photos')
+    .upload(fileName, file)
+
+  if (error) throw error
+
+  const { data } = supabase.storage
+    .from('pet-photos')
+    .getPublicUrl(fileName)
+
+  return data.publicUrl
 }
 
 export async function deletePet(id: string): Promise<void> {
