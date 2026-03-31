@@ -1,7 +1,8 @@
-import { useState, FormEvent } from 'react'
+import { useState } from 'react'
+import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
-import { Role } from '../types'
+import type { Role } from '../types/index'
 
 export default function Login() {
   const [email, setEmail] = useState('')
