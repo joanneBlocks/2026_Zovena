@@ -28,7 +28,8 @@ export default function Pets() {
 
   const [name, setName] = useState('')
   const [species, setSpecies] = useState('')
-  const [age, setAge] = useState('')
+  const [ageYears, setAgeYears] = useState('')
+  const [ageMonths, setAgeMonths] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
@@ -54,11 +55,18 @@ export default function Pets() {
     setError('')
 
     try {
-      const newPet = await createPet(name, species, parseInt(age), profile.id)
+      const newPet = await createPet(
+        name,
+        species,
+        parseInt(ageYears) || 0,
+        parseInt(ageMonths) || 0,
+        profile.id
+      )
       setPets(prev => [newPet, ...prev])
       setName('')
       setSpecies('')
-      setAge('')
+      setAgeYears('')
+      setAgeMonths('')
       setShowForm(false)
     } catch (err) {
       setError('Failed to create pet.')
@@ -90,21 +98,26 @@ export default function Pets() {
     return speciesEmoji[species.toLowerCase()] ?? '🐾'
   }
 
+  function formatAge(years: number, months: number): string {
+    if (years === 0 && months === 0) return 'Age unknown'
+    if (years === 0) return `${months} ${months === 1 ? 'month' : 'months'} old`
+    if (months === 0) return `${years} ${years === 1 ? 'year' : 'years'} old`
+    return `${years} ${years === 1 ? 'year' : 'years'}, ${months} ${months === 1 ? 'month' : 'months'} old`
+  }
+
   return (
     <div className="min-h-screen p-6" style={{ backgroundColor: colors.bg }}>
       <div className="max-w-lg mx-auto">
 
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="text-sm hover:opacity-70 transition-opacity"
-              style={{ color: colors.textSecondary }}
-            >
-              ← Back
-            </button>
-          </div>
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="text-sm hover:opacity-70 transition-opacity"
+            style={{ color: colors.textSecondary }}
+          >
+            ← Back
+          </button>
           <h1 className="text-xl font-bold" style={{ color: colors.textPrimary }}>
             🐾 My Pets
           </h1>
@@ -150,7 +163,10 @@ export default function Pets() {
                 value={species}
                 onChange={e => setSpecies(e.target.value)}
                 className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
-                style={{ border: `1px solid ${colors.border}`, color: species ? colors.textPrimary : colors.textSecondary }}
+                style={{
+                  border: `1px solid ${colors.border}`,
+                  color: species ? colors.textPrimary : colors.textSecondary
+                }}
                 required
               >
                 <option value="" disabled>Select species</option>
@@ -162,18 +178,33 @@ export default function Pets() {
                 <option value="hamster">🐹 Hamster</option>
                 <option value="other">🐾 Other</option>
               </select>
-              <input
-                type="number"
-                placeholder="Age (years)"
-                value={age}
-                onChange={e => setAge(e.target.value)}
-                className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
-                style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
-                min="0"
-                max="100"
-                required
-              />
+
+              {/* Age fields */}
+              <div className="flex gap-3">
+                <input
+                  type="number"
+                  placeholder="Years"
+                  value={ageYears}
+                  onChange={e => setAgeYears(e.target.value)}
+                  className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
+                  style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
+                  min="0"
+                  max="100"
+                />
+                <input
+                  type="number"
+                  placeholder="Months"
+                  value={ageMonths}
+                  onChange={e => setAgeMonths(e.target.value)}
+                  className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
+                  style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
+                  min="0"
+                  max="11"
+                />
+              </div>
+
               {error && <p className="text-sm" style={{ color: colors.error }}>{error}</p>}
+
               <button
                 type="submit"
                 disabled={submitting}
@@ -213,7 +244,7 @@ export default function Pets() {
                   <div>
                     <p className="font-semibold" style={{ color: colors.textPrimary }}>{pet.name}</p>
                     <p className="text-sm capitalize" style={{ color: colors.textSecondary }}>
-                      {pet.species} · {pet.age} {pet.age === 1 ? 'year' : 'years'} old
+                      {pet.species} · {formatAge(pet.age_years, pet.age_months)}
                     </p>
                   </div>
                 </div>
@@ -230,6 +261,7 @@ export default function Pets() {
             ))}
           </div>
         )}
+
       </div>
     </div>
   )
