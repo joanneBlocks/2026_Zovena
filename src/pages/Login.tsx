@@ -43,14 +43,13 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.bg }}>
+    <div className="min-h-screen flex flex-col items-center justify-center" style={{ backgroundColor: colors.bg }}>
       <div className="p-8 rounded-2xl shadow-md w-full max-w-md border" style={{ backgroundColor: colors.card, borderColor: colors.border }}>
 
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-2xl">🐾</span>
-          <h1 className="text-2xl font-bold" style={{ color: colors.textPrimary }}>Zovena</h1>
+        {/* Logo */}
+        <div className="flex items-center justify-center mb-6">
+          <img src="/logo.png" alt="Zovena logo" className="h-20 w-auto" />
         </div>
-        <p className="mb-6 text-sm" style={{ color: colors.textSecondary }}>Pet Wellness Platform</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
@@ -117,6 +116,11 @@ export default function Login() {
           >
             {isSignUp ? 'Sign in' : 'Sign up'}
           </button>
+        </p>
+
+        {/* Copyright */}
+        <p className="text-center text-xs mt-6" style={{ color: colors.textSecondary }}>
+          © 2026 Joanne Costo. All rights reserved.
         </p>
 
       </div>
