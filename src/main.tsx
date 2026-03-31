@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext'
 import RoleGuard from './components/RoleGuard'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import Pets from './pages/Pets'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -13,14 +14,16 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route
-            path="/dashboard"
-            element={
-              <RoleGuard>
-                <Dashboard />
-              </RoleGuard>
-            }
-          />
+          <Route path="/dashboard" element={
+            <RoleGuard>
+              <Dashboard />
+            </RoleGuard>
+          }/>
+          <Route path="/pets" element={
+            <RoleGuard>
+              <Pets />
+            </RoleGuard>
+          }/>
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </AuthProvider>
