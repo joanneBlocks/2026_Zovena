@@ -44,21 +44,27 @@ export async function updatePet(
   ageMonths: number,
   photoUrl?: string | null
 ): Promise<Pet> {
+  const updateData: Record<string, unknown> = {
+    name,
+    species,
+    age_years: ageYears,
+    age_months: ageMonths,
+  }
+
+  if (photoUrl !== undefined) {
+    updateData.photo_url = photoUrl
+  }
+
   const { data, error } = await supabase
     .from('pets')
-    .update({
-      name,
-      species,
-      age_years: ageYears,
-      age_months: ageMonths,
-      ...(photoUrl !== undefined && { photo_url: photoUrl }),
-    })
+    .update(updateData)
     .eq('id', id)
     .select('*, profiles(email)')
-    .single()
 
   if (error) throw error
-  return data
+  if (!data || data.length === 0) throw new Error('No data returned')
+
+  return data[0]
 }
 
 export async function uploadPetPhoto(
