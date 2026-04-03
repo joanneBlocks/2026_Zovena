@@ -36,6 +36,31 @@ export async function createPet(
   return data
 }
 
+export async function updatePet(
+  id: string,
+  name: string,
+  species: string,
+  ageYears: number,
+  ageMonths: number,
+  photoUrl?: string | null
+): Promise<Pet> {
+  const { data, error } = await supabase
+    .from('pets')
+    .update({
+      name,
+      species,
+      age_years: ageYears,
+      age_months: ageMonths,
+      ...(photoUrl !== undefined && { photo_url: photoUrl }),
+    })
+    .eq('id', id)
+    .select('*, profiles(email)')
+    .single()
+
+  if (error) throw error
+  return data
+}
+
 export async function uploadPetPhoto(
   file: File,
   ownerId: string
