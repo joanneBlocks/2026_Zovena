@@ -18,3 +18,16 @@ export interface Pet {
   created_at: string
   profiles?: { email: string }
 }
+
+export interface MedicalRecord {
+  id: string
+  pet_id: string
+  notes: string | null
+  visit_date: string | null
+  visit_reason: string | null
+  vaccinations: string | null
+  created_by: string
+  created_at: string
+  updated_at: string
+  profiles?: { email: string }
+}
