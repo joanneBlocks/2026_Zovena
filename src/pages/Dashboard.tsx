@@ -6,6 +6,8 @@ import Footer from '../components/Footer'
 const colors = {
   indigo: '#4F46E5',
   teal: '#14B8A6',
+  amber: '#F59E0B',
+  coral: '#FB7185',
   bg: '#F9FAFB',
   card: '#FFFFFF',
   textPrimary: '#111827',
@@ -47,13 +49,27 @@ export default function Dashboard() {
               </p>
             </button>
 
-            <div
-              className="w-full p-4 rounded-xl border text-left opacity-40"
+            <button
+              onClick={() => navigate('/pets')}
+              className="w-full p-4 rounded-xl border text-left transition-opacity hover:opacity-80"
               style={{ backgroundColor: colors.bg, borderColor: colors.border }}
             >
               <p className="font-medium" style={{ color: colors.textPrimary }}>📋 Medical Records</p>
-              <p className="text-sm mt-1" style={{ color: colors.textSecondary }}>Coming in Week 3</p>
-            </div>
+              <p className="text-sm mt-1" style={{ color: colors.textSecondary }}>
+                {profile?.role === 'vet' ? 'Manage pet medical records' : 'View your pets\' medical records'}
+              </p>
+            </button>
+
+            <button
+              onClick={() => navigate('/testimonials')}
+              className="w-full p-4 rounded-xl border text-left transition-opacity hover:opacity-80"
+              style={{ backgroundColor: colors.bg, borderColor: colors.border }}
+            >
+              <p className="font-medium" style={{ color: colors.textPrimary }}>✍️ Testimonials</p>
+              <p className="text-sm mt-1" style={{ color: colors.textSecondary }}>
+                Share your experience with Zovena
+              </p>
+            </button>
 
             <div
               className="w-full p-4 rounded-xl border text-left opacity-40"
