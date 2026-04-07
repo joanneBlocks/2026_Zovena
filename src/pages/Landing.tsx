@@ -24,6 +24,7 @@ export default function Landing() {
 
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
   const [loadingTestimonials, setLoadingTestimonials] = useState(true)
+  const [currentTestimonial, setCurrentTestimonial] = useState(0)
 
   useEffect(() => {
     fetchTestimonials()
@@ -411,46 +412,82 @@ export default function Landing() {
               Loading testimonials...
             </p>
           ) : (
-            <div className="grid grid-cols-1 gap-6">
-              {displayTestimonials.map(testimonial => (
-                <div
-                  key={testimonial.id}
-                  className="p-6 rounded-2xl border"
-                  style={{ backgroundColor: colors.bg, borderColor: colors.border }}
-                >
-                  <div className="flex items-center gap-4 mb-4">
-                    {testimonial.photo_url ? (
-                      <img
-                        src={testimonial.photo_url}
-                        alt={testimonial.name}
-                        className="w-12 h-12 rounded-full object-cover border"
-                        style={{ borderColor: colors.border }}
-                      />
-                    ) : (
-                      <div
-                        className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold text-white flex-shrink-0"
-                        style={{ backgroundColor: colors.indigo }}
-                      >
-                        {testimonial.name.charAt(0).toUpperCase()}
-                      </div>
-                    )}
-                    <div>
-                      <p className="font-semibold text-sm" style={{ color: colors.textPrimary }}>
-                        {testimonial.name}
-                      </p>
-                      <p className="text-xs" style={{ color: colors.teal }}>
-                        {testimonial.role}
-                      </p>
+            <div className="relative">
+              {/* Carousel Card */}
+              <div
+                className="p-6 rounded-2xl border"
+                style={{ backgroundColor: colors.bg, borderColor: colors.border }}
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  {displayTestimonials[currentTestimonial].photo_url ? (
+                    <img
+                      src={displayTestimonials[currentTestimonial].photo_url!}
+                      alt={displayTestimonials[currentTestimonial].name}
+                      className="w-12 h-12 rounded-full object-cover border"
+                      style={{ borderColor: colors.border }}
+                    />
+                  ) : (
+                    <div
+                      className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold text-white flex-shrink-0"
+                      style={{ backgroundColor: colors.indigo }}
+                    >
+                      {displayTestimonials[currentTestimonial].name.charAt(0).toUpperCase()}
                     </div>
-                    <div className="ml-auto text-sm" style={{ color: colors.amber }}>
-                      ★★★★★
-                    </div>
+                  )}
+                  <div>
+                    <p className="font-semibold text-sm" style={{ color: colors.textPrimary }}>
+                      {displayTestimonials[currentTestimonial].name}
+                    </p>
+                    <p className="text-xs" style={{ color: colors.teal }}>
+                      {displayTestimonials[currentTestimonial].role}
+                    </p>
                   </div>
-                  <p className="text-sm leading-relaxed" style={{ color: colors.textSecondary }}>
-                    "{testimonial.message}"
-                  </p>
+                  <div className="ml-auto text-sm" style={{ color: colors.amber }}>
+                    ★★★★★
+                  </div>
                 </div>
-              ))}
+                <p className="text-sm leading-relaxed" style={{ color: colors.textSecondary }}>
+                  "{displayTestimonials[currentTestimonial].message}"
+                </p>
+              </div>
+
+              {/* Navigation */}
+              <div className="flex justify-between items-center mt-6">
+                <button
+                  onClick={() => setCurrentTestimonial(prev =>
+                    prev === 0 ? displayTestimonials.length - 1 : prev - 1
+                  )}
+                  className="w-10 h-10 rounded-full flex items-center justify-center transition-opacity hover:opacity-70"
+                  style={{ border: `1px solid ${colors.border}`, color: colors.textSecondary, backgroundColor: colors.card }}
+                >
+                  ←
+                </button>
+
+                {/* Dots */}
+                <div className="flex gap-2 items-center">
+                  {displayTestimonials.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentTestimonial(index)}
+                      className="h-2 rounded-full transition-all"
+                      style={{
+                        backgroundColor: index === currentTestimonial ? colors.indigo : colors.border,
+                        width: index === currentTestimonial ? '20px' : '8px',
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setCurrentTestimonial(prev =>
+                    prev === displayTestimonials.length - 1 ? 0 : prev + 1
+                  )}
+                  className="w-10 h-10 rounded-full flex items-center justify-center transition-opacity hover:opacity-70"
+                  style={{ border: `1px solid ${colors.border}`, color: colors.textSecondary, backgroundColor: colors.card }}
+                >
+                  →
+                </button>
+              </div>
             </div>
           )}
 
