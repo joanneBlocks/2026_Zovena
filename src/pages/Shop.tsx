@@ -23,131 +23,205 @@ const products = [
     name: 'Premium Dog Food',
     category: 'Food',
     description: 'High-protein, grain-free formula for adult dogs. Made with real chicken and vegetables.',
-    price: '₱850',
+    price: 850,
+    originalPrice: 1050,
     tag: 'Best Seller',
     tagColor: colors.indigo,
     forPet: 'Dogs',
+    rating: 4.9,
+    reviews: 128,
   },
   {
     emoji: '🐟',
     name: 'Salmon Cat Food',
     category: 'Food',
     description: 'Omega-3 rich wet food for cats of all ages. Supports healthy coat and immune system.',
-    price: '₱420',
+    price: 420,
+    originalPrice: null,
     tag: 'New',
     tagColor: colors.teal,
     forPet: 'Cats',
+    rating: 4.7,
+    reviews: 54,
   },
   {
     emoji: '🌾',
     name: 'Small Animal Pellets',
     category: 'Food',
     description: 'Balanced nutrition pellets for guinea pigs, hamsters, and rabbits. Vitamin-enriched formula.',
-    price: '₱280',
+    price: 280,
+    originalPrice: null,
     tag: null,
     tagColor: null,
     forPet: 'Small Animals',
+    rating: 4.5,
+    reviews: 32,
   },
   {
     emoji: '🦴',
     name: 'Dental Chew Treats',
     category: 'Treats',
     description: 'Cleans teeth and freshens breath while your dog enjoys a delicious treat. Vet-recommended.',
-    price: '₱320',
+    price: 320,
+    originalPrice: 400,
     tag: 'Vet Approved',
     tagColor: colors.success,
     forPet: 'Dogs',
+    rating: 4.8,
+    reviews: 96,
   },
   {
     emoji: '🐠',
     name: 'Freeze-Dried Fish Treats',
     category: 'Treats',
     description: 'Single-ingredient freeze-dried fish treats. Perfect for cats and small dogs.',
-    price: '₱250',
+    price: 250,
+    originalPrice: null,
     tag: null,
     tagColor: null,
     forPet: 'Cats & Dogs',
+    rating: 4.6,
+    reviews: 41,
   },
   {
     emoji: '🎀',
     name: 'Adjustable Pet Collar',
     category: 'Accessories',
     description: 'Comfortable and durable adjustable collar with ID tag holder. Available in multiple colors.',
-    price: '₱180',
+    price: 180,
+    originalPrice: null,
     tag: null,
     tagColor: null,
     forPet: 'Dogs & Cats',
+    rating: 4.4,
+    reviews: 67,
   },
   {
     emoji: '🎒',
     name: 'Pet Carrier Bag',
     category: 'Accessories',
     description: 'Lightweight, well-ventilated carrier bag for small pets. Airline-approved design.',
-    price: '₱1,200',
+    price: 1200,
+    originalPrice: 1500,
     tag: 'Popular',
     tagColor: colors.coral,
     forPet: 'Small Pets',
+    rating: 4.8,
+    reviews: 83,
   },
   {
     emoji: '💊',
     name: 'Multivitamin Supplements',
     category: 'Health',
     description: 'Daily multivitamin chews for dogs. Supports joint health, immunity, and coat shine.',
-    price: '₱650',
+    price: 650,
+    originalPrice: 800,
     tag: 'Vet Approved',
     tagColor: colors.success,
     forPet: 'Dogs',
+    rating: 4.9,
+    reviews: 112,
   },
   {
     emoji: '🧴',
     name: 'Pet Shampoo & Conditioner',
     category: 'Health',
     description: 'Gentle, hypoallergenic shampoo and conditioner set. Safe for sensitive skin and all coat types.',
-    price: '₱380',
+    price: 380,
+    originalPrice: null,
     tag: null,
     tagColor: null,
     forPet: 'Dogs & Cats',
+    rating: 4.6,
+    reviews: 58,
   },
   {
     emoji: '🎾',
     name: 'Interactive Fetch Ball',
     category: 'Toys',
     description: 'Durable rubber fetch ball with squeaker inside. Perfect for outdoor play and mental stimulation.',
-    price: '₱150',
+    price: 150,
+    originalPrice: null,
     tag: null,
     tagColor: null,
     forPet: 'Dogs',
+    rating: 4.5,
+    reviews: 44,
   },
   {
     emoji: '🐱',
     name: 'Cat Feather Wand',
     category: 'Toys',
     description: 'Interactive feather wand toy to keep your cat active and entertained. Extendable handle.',
-    price: '₱120',
+    price: 120,
+    originalPrice: 160,
     tag: 'Best Seller',
     tagColor: colors.indigo,
     forPet: 'Cats',
+    rating: 4.7,
+    reviews: 89,
   },
   {
     emoji: '🌀',
     name: 'Puzzle Treat Dispenser',
     category: 'Toys',
     description: 'Mental stimulation toy that dispenses treats as your pet solves the puzzle. Great for all ages.',
-    price: '₱450',
+    price: 450,
+    originalPrice: null,
     tag: 'New',
     tagColor: colors.teal,
     forPet: 'Dogs & Cats',
+    rating: 4.8,
+    reviews: 37,
   },
 ]
 
 export default function Shop() {
   const navigate = useNavigate()
   const [activeCategory, setActiveCategory] = useState('All')
-  const [cartCount, setCartCount] = useState(0)
+  const [cart, setCart] = useState<Record<string, number>>({})
+  const [wishlist, setWishlist] = useState<string[]>([])
+  const [sortBy, setSortBy] = useState('default')
 
-  const filtered = activeCategory === 'All'
-    ? products
-    : products.filter(p => p.category === activeCategory)
+  const cartCount = Object.values(cart).reduce((a, b) => a + b, 0)
+  const cartTotal = Object.entries(cart).reduce((total, [name, qty]) => {
+    const product = products.find(p => p.name === name)
+    return total + (product?.price ?? 0) * qty
+  }, 0)
+
+  function addToCart(name: string): void {
+    setCart(prev => ({ ...prev, [name]: (prev[name] ?? 0) + 1 }))
+  }
+
+  function removeFromCart(name: string): void {
+    setCart(prev => {
+      const updated = { ...prev }
+      if (updated[name] > 1) updated[name]--
+      else delete updated[name]
+      return updated
+    })
+  }
+
+  function toggleWishlist(name: string): void {
+    setWishlist(prev =>
+      prev.includes(name) ? prev.filter(n => n !== name) : [...prev, name]
+    )
+  }
+
+  const filtered = products
+    .filter(p => activeCategory === 'All' || p.category === activeCategory)
+    .sort((a, b) => {
+      if (sortBy === 'price-asc') return a.price - b.price
+      if (sortBy === 'price-desc') return b.price - a.price
+      if (sortBy === 'rating') return b.rating - a.rating
+      return 0
+    })
+
+  function renderStars(rating: number): string {
+    const full = Math.floor(rating)
+    const half = rating % 1 >= 0.5 ? 1 : 0
+    return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - half)
+  }
 
   return (
     <div style={{ backgroundColor: colors.bg, color: colors.textPrimary, minHeight: '100vh' }}>
@@ -160,17 +234,17 @@ export default function Shop() {
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
           <img src="/logo.png" alt="Zovena" className="h-10 w-auto" />
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <button
             onClick={() => navigate('/specialists')}
-            className="text-sm font-medium hover:opacity-70 transition-opacity hidden md:block"
+            className="text-sm font-medium hover:opacity-70 transition-opacity"
             style={{ color: colors.textSecondary }}
           >
             Specialists
           </button>
           <button
             onClick={() => navigate('/services')}
-            className="text-sm font-medium hover:opacity-70 transition-opacity hidden md:block"
+            className="text-sm font-medium hover:opacity-70 transition-opacity"
             style={{ color: colors.textSecondary }}
           >
             Services
@@ -184,10 +258,10 @@ export default function Shop() {
           </button>
           {cartCount > 0 && (
             <div
-              className="text-sm font-medium text-white px-4 py-2 rounded-lg"
+              className="relative text-sm font-medium text-white px-4 py-2 rounded-lg cursor-pointer"
               style={{ backgroundColor: colors.coral }}
             >
-              🛒 {cartCount}
+              🛒 {cartCount} · ₱{cartTotal.toLocaleString()}
             </div>
           )}
           <button
@@ -201,14 +275,14 @@ export default function Shop() {
       </nav>
 
       {/* Hero */}
-      <section className="px-8 py-16 text-center max-w-3xl mx-auto">
+      <section className="px-8 py-12 text-center max-w-4xl mx-auto">
         <div
-          className="inline-block px-4 py-1 rounded-full text-xs font-medium text-white mb-6"
+          className="inline-block px-4 py-1 rounded-full text-xs font-medium text-white mb-4"
           style={{ backgroundColor: colors.amber }}
         >
           🛍️ Pet Shop
         </div>
-        <h1 className="text-3xl font-bold mb-4" style={{ color: colors.textPrimary }}>
+        <h1 className="text-3xl font-bold mb-3" style={{ color: colors.textPrimary }}>
           Food & Accessories for your pets
         </h1>
         <p className="text-base leading-relaxed" style={{ color: colors.textSecondary }}>
@@ -217,89 +291,180 @@ export default function Shop() {
         </p>
       </section>
 
-      {/* Category Filter */}
-      <section className="px-8 pb-8 max-w-3xl mx-auto">
-        <div className="flex gap-2 flex-wrap justify-center">
-          {categories.map(category => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className="text-sm font-medium px-4 py-2 rounded-full transition-opacity hover:opacity-90"
-              style={{
-                backgroundColor: activeCategory === category ? colors.indigo : colors.card,
-                color: activeCategory === category ? '#fff' : colors.textSecondary,
-                border: `1px solid ${activeCategory === category ? colors.indigo : colors.border}`,
-              }}
-            >
-              {category}
-            </button>
-          ))}
+      {/* Filters & Sort */}
+      <section className="px-8 pb-6 max-w-4xl mx-auto">
+        <div className="flex flex-wrap justify-between items-center gap-4">
+          <div className="flex gap-2 flex-wrap">
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className="text-sm font-medium px-4 py-2 rounded-full transition-opacity hover:opacity-90"
+                style={{
+                  backgroundColor: activeCategory === category ? colors.indigo : colors.card,
+                  color: activeCategory === category ? '#fff' : colors.textSecondary,
+                  border: `1px solid ${activeCategory === category ? colors.indigo : colors.border}`,
+                }}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+          <select
+            value={sortBy}
+            onChange={e => setSortBy(e.target.value)}
+            className="text-sm rounded-lg px-3 py-2 focus:outline-none"
+            style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary, backgroundColor: colors.card }}
+          >
+            <option value="default">Sort: Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Top Rated</option>
+          </select>
         </div>
+        <p className="text-xs mt-3" style={{ color: colors.textSecondary }}>
+          {filtered.length} products found
+        </p>
       </section>
 
       {/* Products Grid */}
-      <section className="px-8 pb-20 max-w-3xl mx-auto">
-        <div className="grid grid-cols-1 gap-6">
+      <section className="px-8 pb-20 max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
           {filtered.map(product => (
             <div
               key={product.name}
-              className="rounded-2xl border p-5 flex gap-4 items-start"
+              className="rounded-2xl border overflow-hidden flex flex-col"
               style={{ backgroundColor: colors.card, borderColor: colors.border }}
             >
+              {/* Product Image Area */}
               <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0"
-                style={{ backgroundColor: `${colors.indigo}10` }}
+                className="relative flex items-center justify-center py-8"
+                style={{ backgroundColor: `${colors.indigo}08` }}
               >
-                {product.emoji}
+                <span className="text-5xl">{product.emoji}</span>
+
+                {/* Tag */}
+                {product.tag && (
+                  <div
+                    className="absolute top-2 left-2 text-xs font-medium px-2 py-0.5 rounded-full text-white"
+                    style={{ backgroundColor: product.tagColor ?? colors.indigo }}
+                  >
+                    {product.tag}
+                  </div>
+                )}
+
+                {/* Wishlist */}
+                <button
+                  onClick={() => toggleWishlist(product.name)}
+                  className="absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center transition-opacity hover:opacity-70"
+                  style={{
+                    backgroundColor: colors.card,
+                    color: wishlist.includes(product.name) ? colors.coral : colors.textSecondary,
+                    border: `1px solid ${colors.border}`,
+                  }}
+                >
+                  {wishlist.includes(product.name) ? '♥' : '♡'}
+                </button>
+
+                {/* Discount badge */}
+                {product.originalPrice && (
+                  <div
+                    className="absolute bottom-2 left-2 text-xs font-medium px-2 py-0.5 rounded-full text-white"
+                    style={{ backgroundColor: colors.error }}
+                  >
+                    -{Math.round((1 - product.price / product.originalPrice) * 100)}%
+                  </div>
+                )}
               </div>
-              <div className="flex-1">
-                <div className="flex justify-between items-start flex-wrap gap-2">
-                  <div>
-                    <p className="font-bold" style={{ color: colors.textPrimary }}>
-                      {product.name}
-                    </p>
-                    <p className="text-xs mt-1" style={{ color: colors.textSecondary }}>
-                      For: {product.forPet}
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-end gap-1">
-                    <p className="font-bold text-sm" style={{ color: colors.indigo }}>
-                      {product.price}
-                    </p>
-                    {product.tag && (
-                      <span
-                        className="text-xs px-2 py-0.5 rounded-full font-medium text-white"
-                        style={{ backgroundColor: product.tagColor ?? colors.indigo }}
-                      >
-                        {product.tag}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <p className="text-sm mt-2 leading-relaxed" style={{ color: colors.textSecondary }}>
+
+              {/* Product Info */}
+              <div className="p-4 flex flex-col flex-1">
+                <p className="font-semibold text-sm leading-tight mb-1" style={{ color: colors.textPrimary }}>
+                  {product.name}
+                </p>
+                <p className="text-xs mb-2" style={{ color: colors.teal }}>
+                  For: {product.forPet}
+                </p>
+                <p className="text-xs leading-relaxed mb-3 flex-1" style={{ color: colors.textSecondary }}>
                   {product.description}
                 </p>
-                <div className="flex gap-2 mt-4">
+
+                {/* Rating */}
+                <div className="flex items-center gap-1 mb-3">
+                  <span className="text-xs" style={{ color: colors.amber }}>
+                    {renderStars(product.rating)}
+                  </span>
+                  <span className="text-xs" style={{ color: colors.textSecondary }}>
+                    ({product.reviews})
+                  </span>
+                </div>
+
+                {/* Price */}
+                <div className="flex items-center gap-2 mb-3">
+                  <p className="font-bold text-sm" style={{ color: colors.indigo }}>
+                    ₱{product.price.toLocaleString()}
+                  </p>
+                  {product.originalPrice && (
+                    <p className="text-xs line-through" style={{ color: colors.textSecondary }}>
+                      ₱{product.originalPrice.toLocaleString()}
+                    </p>
+                  )}
+                </div>
+
+                {/* Add to Cart */}
+                {cart[product.name] ? (
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => removeFromCart(product.name)}
+                      className="w-8 h-8 rounded-lg text-sm font-bold transition-opacity hover:opacity-70 flex items-center justify-center"
+                      style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
+                    >
+                      −
+                    </button>
+                    <span className="flex-1 text-center text-sm font-medium" style={{ color: colors.textPrimary }}>
+                      {cart[product.name]}
+                    </span>
+                    <button
+                      onClick={() => addToCart(product.name)}
+                      className="w-8 h-8 rounded-lg text-sm font-bold text-white transition-opacity hover:opacity-70 flex items-center justify-center"
+                      style={{ backgroundColor: colors.indigo }}
+                    >
+                      +
+                    </button>
+                  </div>
+                ) : (
                   <button
-                    onClick={() => setCartCount(prev => prev + 1)}
-                    className="text-sm font-medium text-white px-4 py-2 rounded-lg transition-opacity hover:opacity-90"
+                    onClick={() => addToCart(product.name)}
+                    className="w-full text-sm font-medium text-white py-2 rounded-lg transition-opacity hover:opacity-90"
                     style={{ backgroundColor: colors.indigo }}
                   >
                     Add to cart
                   </button>
-                  <button
-                    onClick={() => navigate('/login')}
-                    className="text-sm font-medium px-4 py-2 rounded-lg transition-opacity hover:opacity-70"
-                    style={{ color: colors.textSecondary, border: `1px solid ${colors.border}` }}
-                  >
-                    Learn more
-                  </button>
-                </div>
+                )}
               </div>
             </div>
           ))}
         </div>
       </section>
+
+      {/* Floating Cart Summary */}
+      {cartCount > 0 && (
+        <div
+          className="fixed bottom-6 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-2xl shadow-lg flex items-center gap-4 z-20"
+          style={{ backgroundColor: colors.indigo }}
+        >
+          <span className="text-white text-sm font-medium">
+            🛒 {cartCount} {cartCount === 1 ? 'item' : 'items'} · ₱{cartTotal.toLocaleString()}
+          </span>
+          <button
+            onClick={() => navigate('/login')}
+            className="text-sm font-medium px-4 py-1.5 rounded-lg transition-opacity hover:opacity-90"
+            style={{ backgroundColor: colors.card, color: colors.indigo }}
+          >
+            Checkout →
+          </button>
+        </div>
+      )}
 
       {/* CTA */}
       <section
