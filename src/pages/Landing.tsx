@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   getApprovedTestimonials,
-  submitTestimonial,
-  uploadTestimonialPhoto,
   type Testimonial,
 } from '../api/testimonials'
 
@@ -27,16 +25,6 @@ export default function Landing() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
   const [loadingTestimonials, setLoadingTestimonials] = useState(true)
 
-  const [showTestimonialForm, setShowTestimonialForm] = useState(false)
-  const [tName, setTName] = useState('')
-  const [tRole, setTRole] = useState('Pet Owner')
-  const [tMessage, setTMessage] = useState('')
-  const [tPhoto, setTPhoto] = useState<File | null>(null)
-  const [tPhotoPreview, setTPhotoPreview] = useState<string | null>(null)
-  const [tSubmitting, setTSubmitting] = useState(false)
-  const [tSuccess, setTSuccess] = useState(false)
-  const [tError, setTError] = useState('')
-
   useEffect(() => {
     fetchTestimonials()
   }, [])
@@ -49,38 +37,6 @@ export default function Landing() {
       console.error('Failed to load testimonials')
     } finally {
       setLoadingTestimonials(false)
-    }
-  }
-
-  function handleTestimonialPhotoChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const file = e.target.files?.[0] ?? null
-    setTPhoto(file)
-    if (file) setTPhotoPreview(URL.createObjectURL(file))
-    else setTPhotoPreview(null)
-  }
-
-  async function handleSubmitTestimonial(e: React.FormEvent): Promise<void> {
-    e.preventDefault()
-    setTSubmitting(true)
-    setTError('')
-
-    try {
-      let photoUrl: string | undefined
-      if (tPhoto) {
-        photoUrl = await uploadTestimonialPhoto(tPhoto)
-      }
-      await submitTestimonial(tName, tRole, tMessage, photoUrl)
-      setTSuccess(true)
-      setTName('')
-      setTRole('Pet Owner')
-      setTMessage('')
-      setTPhoto(null)
-      setTPhotoPreview(null)
-      setShowTestimonialForm(false)
-    } catch (err) {
-      setTError('Failed to submit testimonial. Please try again.')
-    } finally {
-      setTSubmitting(false)
     }
   }
 
@@ -499,104 +455,17 @@ export default function Landing() {
           )}
 
           <div className="mt-12 text-center">
-            {tSuccess ? (
-              <div
-                className="p-4 rounded-xl text-sm"
-                style={{ backgroundColor: `${colors.success}18`, color: colors.success }}
-              >
-                ✅ Thank you for your testimonial! It will appear after review.
-              </div>
-            ) : (
-              <>
-                <p className="text-sm mb-4" style={{ color: colors.textSecondary }}>
-                  Had a great experience with Zovena?
-                </p>
-                <button
-                  onClick={() => setShowTestimonialForm(prev => !prev)}
-                  className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: colors.indigo }}
-                >
-                  {showTestimonialForm ? 'Cancel' : '✍️ Share your experience'}
-                </button>
-              </>
-            )}
-          </div>
-
-          {showTestimonialForm && !tSuccess && (
-            <div
-              className="mt-6 p-6 rounded-2xl border"
-              style={{ backgroundColor: colors.bg, borderColor: colors.border }}
+            <p className="text-sm mb-4" style={{ color: colors.textSecondary }}>
+              Had a great experience with Zovena?
+            </p>
+            <button
+              onClick={() => navigate('/login')}
+              className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+              style={{ backgroundColor: colors.indigo }}
             >
-              <h3 className="font-semibold mb-4" style={{ color: colors.textPrimary }}>
-                Share your experience
-              </h3>
-              <form onSubmit={handleSubmitTestimonial} className="space-y-3">
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  value={tName}
-                  onChange={e => setTName(e.target.value)}
-                  className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
-                  style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
-                  required
-                />
-                <select
-                  value={tRole}
-                  onChange={e => setTRole(e.target.value)}
-                  className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
-                  style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
-                >
-                  <option value="Pet Owner">🏠 Pet Owner</option>
-                  <option value="Veterinarian">🩺 Veterinarian</option>
-                  <option value="Animal Care Specialist">🐾 Animal Care Specialist</option>
-                  <option value="Pet Lover">❤️ Pet Lover</option>
-                </select>
-                <textarea
-                  placeholder="Share your experience with Zovena..."
-                  value={tMessage}
-                  onChange={e => setTMessage(e.target.value)}
-                  rows={4}
-                  className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 resize-none"
-                  style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
-                  required
-                />
-                <div>
-                  <label className="block text-sm mb-1" style={{ color: colors.textSecondary }}>
-                    Your photo (optional)
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleTestimonialPhotoChange}
-                    className="w-full text-sm"
-                    style={{ color: colors.textSecondary }}
-                  />
-                  {tPhotoPreview && (
-                    <img
-                      src={tPhotoPreview}
-                      alt="Preview"
-                      className="mt-3 w-16 h-16 rounded-full object-cover border"
-                      style={{ borderColor: colors.border }}
-                    />
-                  )}
-                </div>
-                {tError && (
-                  <p className="text-sm" style={{ color: colors.error }}>{tError}</p>
-                )}
-                <p className="text-xs" style={{ color: colors.textSecondary }}>
-                  ℹ️ Your testimonial will be reviewed before it appears on the site.
-                </p>
-                <button
-                  type="submit"
-                  disabled={tSubmitting}
-                  className="w-full text-white py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50"
-                  style={{ backgroundColor: colors.indigo }}
-                >
-                  {tSubmitting ? 'Submitting...' : 'Submit testimonial'}
-                </button>
-              </form>
-            </div>
-          )}
+              Sign in to share your experience →
+            </button>
+          </div>
         </div>
       </section>
 
