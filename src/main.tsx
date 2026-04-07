@@ -11,6 +11,7 @@ import MedicalRecords from './pages/MedicalRecords'
 import Specialists from './pages/Specialists'
 import Services from './pages/Services'
 import Shop from './pages/Shop'
+import Testimonials from './pages/Testimonials'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -36,6 +37,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Route path="/pets/:petId/records" element={
             <RoleGuard>
               <MedicalRecords />
+            </RoleGuard>
+          }/>
+          <Route path="/testimonials" element={
+            <RoleGuard>
+              <Testimonials />
             </RoleGuard>
           }/>
           <Route path="*" element={<Navigate to="/" replace />} />
