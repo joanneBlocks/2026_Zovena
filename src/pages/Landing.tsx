@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import {
   getApprovedTestimonials,
   type Testimonial,
@@ -21,6 +22,7 @@ const colors = {
 
 export default function Landing() {
   const navigate = useNavigate()
+  const { profile } = useAuth()
 
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
   const [loadingTestimonials, setLoadingTestimonials] = useState(true)
@@ -80,8 +82,8 @@ export default function Landing() {
     backgroundAttachment: 'fixed',
   }
 
-  const overlayDark = 'rgba(0,0,0,0.55)'
-  const overlayLight = 'rgba(0,0,0,0.40)'
+  const overlayDark = 'rgba(0,0,0,0.80)'
+  const overlayLight = 'rgba(0,0,0,0.70)'
 
   return (
     <div style={{ backgroundColor: colors.bg, color: colors.textPrimary }}>
@@ -116,20 +118,32 @@ export default function Landing() {
           >
             Shop
           </button>
-          <button
-            onClick={() => navigate('/login')}
-            className="text-sm font-medium px-4 py-2 rounded-lg transition-opacity hover:opacity-70"
-            style={{ color: colors.textSecondary }}
-          >
-            Sign in
-          </button>
-          <button
-            onClick={() => navigate('/login')}
-            className="text-sm font-medium text-white px-4 py-2 rounded-lg transition-opacity hover:opacity-90"
-            style={{ backgroundColor: colors.indigo }}
-          >
-            Get started
-          </button>
+          {profile ? (
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="text-sm font-medium text-white px-4 py-2 rounded-lg transition-opacity hover:opacity-90"
+              style={{ backgroundColor: colors.teal }}
+            >
+              My Dashboard →
+            </button>
+          ) : (
+            <>
+              <button
+                onClick={() => navigate('/login')}
+                className="text-sm font-medium px-4 py-2 rounded-lg transition-opacity hover:opacity-70"
+                style={{ color: colors.textSecondary }}
+              >
+                Sign in
+              </button>
+              <button
+                onClick={() => navigate('/login')}
+                className="text-sm font-medium text-white px-4 py-2 rounded-lg transition-opacity hover:opacity-90"
+                style={{ backgroundColor: colors.indigo }}
+              >
+                Get started
+              </button>
+            </>
+          )}
         </div>
       </nav>
 
@@ -150,7 +164,7 @@ export default function Landing() {
             className="inline-block px-4 py-1 rounded-full text-xs font-medium text-white mb-6"
             style={{ backgroundColor: colors.teal }}
           >
-            Pet Wellness, Reimagined
+            🐾 Pet Wellness, Reimagined
           </div>
           <h1 className="text-4xl font-bold mb-6 leading-tight" style={{ color: '#FFFFFF' }}>
             The smarter way to manage<br />your pet's health
@@ -160,20 +174,32 @@ export default function Landing() {
             through a secure, centralized system — making pet healthcare simpler, safer, and more organized.
           </p>
           <div className="flex justify-center gap-4 flex-wrap">
-            <button
-              onClick={() => navigate('/login')}
-              className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
-              style={{ backgroundColor: colors.indigo }}
-            >
-              🏠 I'm a Pet Owner
-            </button>
-            <button
-              onClick={() => navigate('/login')}
-              className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
-              style={{ backgroundColor: colors.teal }}
-            >
-              🩺 I'm a Veterinarian
-            </button>
+            {profile ? (
+              <button
+                onClick={() => navigate('/dashboard')}
+                className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+                style={{ backgroundColor: colors.teal }}
+              >
+                Go to my dashboard →
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={() => navigate('/login')}
+                  className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: colors.indigo }}
+                >
+                  🏠 I'm a Pet Owner
+                </button>
+                <button
+                  onClick={() => navigate('/login')}
+                  className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: colors.teal }}
+                >
+                  🩺 I'm a Veterinarian
+                </button>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -494,11 +520,11 @@ export default function Landing() {
               Had a great experience with Zovena?
             </p>
             <button
-              onClick={() => navigate('/login')}
+              onClick={() => navigate(profile ? '/testimonials' : '/login')}
               className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
               style={{ backgroundColor: colors.indigo }}
             >
-              Sign in to share your experience →
+              {profile ? 'Share your experience →' : 'Sign in to share your experience →'}
             </button>
           </div>
         </div>
@@ -518,19 +544,31 @@ export default function Landing() {
             Join Zovena today and bring your pet's health records into the digital age.
           </p>
           <div className="flex justify-center gap-4 flex-wrap">
-            <button
-              onClick={() => navigate('/login')}
-              className="text-sm font-medium px-6 py-3 rounded-xl transition-opacity hover:opacity-90 text-white border border-white"
-            >
-              Sign in
-            </button>
-            <button
-              onClick={() => navigate('/login')}
-              className="text-sm font-medium px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
-              style={{ backgroundColor: colors.card, color: colors.indigo }}
-            >
-              Create free account →
-            </button>
+            {profile ? (
+              <button
+                onClick={() => navigate('/dashboard')}
+                className="text-sm font-medium px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+                style={{ backgroundColor: colors.card, color: colors.indigo }}
+              >
+                Go to my dashboard →
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={() => navigate('/login')}
+                  className="text-sm font-medium px-6 py-3 rounded-xl transition-opacity hover:opacity-90 text-white border border-white"
+                >
+                  Sign in
+                </button>
+                <button
+                  onClick={() => navigate('/login')}
+                  className="text-sm font-medium px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: colors.card, color: colors.indigo }}
+                >
+                  Create free account →
+                </button>
+              </>
+            )}
           </div>
         </div>
       </section>
