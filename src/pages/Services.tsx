@@ -29,6 +29,7 @@ const services = [
       'Suitable for dogs, cats, and small animals',
     ],
     price: 'Starting at ₱500/night',
+    route: '/services/boarding',
   },
   {
     emoji: '🚗',
@@ -45,6 +46,7 @@ const services = [
       'Emergency transport available',
     ],
     price: 'Starting at ₱300/trip',
+    route: '/services/transport',
   },
   {
     emoji: '✂️',
@@ -61,6 +63,7 @@ const services = [
       'De-shedding treatment',
     ],
     price: 'Starting at ₱400/session',
+    route: '/services/grooming',
   },
   {
     emoji: '🍽️',
@@ -77,6 +80,24 @@ const services = [
       'Birthday and special event catering',
     ],
     price: 'Starting at ₱150/meal',
+    route: '/services/restaurant',
+  },
+  {
+    emoji: '📸',
+    title: 'Pet Photography',
+    color: colors.indigo,
+    tagline: 'Capture the moments that matter',
+    description: 'Professional pet photography that captures your pet\'s unique personality. From studio portraits to outdoor adventures — we create timeless memories you\'ll treasure forever.',
+    features: [
+      'Studio and outdoor sessions',
+      'Professional photo editing',
+      'Digital and print delivery',
+      'Birthday and holiday themes',
+      'Family portrait sessions',
+      'Same-week delivery available',
+    ],
+    price: 'Starting at ₱1,500/session',
+    route: '/services/photography',
   },
 ]
 
@@ -94,17 +115,17 @@ export default function Services() {
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
           <img src="/logo.png" alt="Zovena" className="h-10 w-auto" />
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <button
             onClick={() => navigate('/specialists')}
-            className="text-sm font-medium hover:opacity-70 transition-opacity hidden md:block"
+            className="text-sm font-medium hover:opacity-70 transition-opacity"
             style={{ color: colors.textSecondary }}
           >
             Specialists
           </button>
           <button
             onClick={() => navigate('/shop')}
-            className="text-sm font-medium hover:opacity-70 transition-opacity hidden md:block"
+            className="text-sm font-medium hover:opacity-70 transition-opacity"
             style={{ color: colors.textSecondary }}
           >
             Shop
@@ -138,8 +159,8 @@ export default function Services() {
           Everything your pet needs
         </h1>
         <p className="text-base leading-relaxed" style={{ color: colors.textSecondary }}>
-          From boarding and grooming to transport and dining — Zovena offers a complete
-          suite of services designed to keep your pet happy, healthy, and well cared for.
+          From boarding and grooming to transport, dining, and photography — Zovena offers
+          a complete suite of services designed to keep your pet happy, healthy, and well cared for.
         </p>
       </section>
 
@@ -163,7 +184,7 @@ export default function Services() {
                 >
                   {service.emoji}
                 </div>
-                <div>
+                <div className="flex-1">
                   <p className="font-bold text-lg" style={{ color: colors.textPrimary }}>
                     {service.title}
                   </p>
@@ -172,7 +193,7 @@ export default function Services() {
                   </p>
                 </div>
                 <span
-                  className="ml-auto text-xs font-medium px-3 py-1 rounded-full text-white"
+                  className="text-xs font-medium px-3 py-1 rounded-full text-white flex-shrink-0"
                   style={{ backgroundColor: service.color }}
                 >
                   {service.price}
@@ -184,7 +205,7 @@ export default function Services() {
                 <p className="text-sm leading-relaxed mb-4" style={{ color: colors.textSecondary }}>
                   {service.description}
                 </p>
-                <div className="grid grid-cols-1 gap-2">
+                <div className="grid grid-cols-1 gap-2 mb-6">
                   {service.features.map(feature => (
                     <div key={feature} className="flex items-center gap-2 text-sm" style={{ color: colors.textSecondary }}>
                       <span style={{ color: service.color }}>✓</span>
@@ -192,13 +213,22 @@ export default function Services() {
                     </div>
                   ))}
                 </div>
-                <button
-                  onClick={() => navigate('/login')}
-                  className="mt-6 text-sm font-medium text-white px-5 py-2 rounded-lg transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: service.color }}
-                >
-                  Book {service.title}
-                </button>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => navigate(service.route)}
+                    className="text-sm font-medium text-white px-5 py-2 rounded-lg transition-opacity hover:opacity-90"
+                    style={{ backgroundColor: service.color }}
+                  >
+                    Learn more
+                  </button>
+                  <button
+                    onClick={() => navigate('/login')}
+                    className="text-sm font-medium px-5 py-2 rounded-lg transition-opacity hover:opacity-70"
+                    style={{ color: service.color, border: `1px solid ${service.color}` }}
+                  >
+                    Book {service.title}
+                  </button>
+                </div>
               </div>
             </div>
           ))}
