@@ -11,6 +11,11 @@ import Specialists from './pages/Specialists'
 import Services from './pages/Services'
 import Shop from './pages/Shop'
 import Testimonials from './pages/Testimonials'
+import PetBoarding from './pages/PetBoarding'
+import PetTransport from './pages/PetTransport'
+import PetRestaurant from './pages/PetRestaurant'
+import PetGrooming from './pages/PetGrooming'
+import PetPhotography from './pages/PetPhotography'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -21,6 +26,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Route path="/login" element={<Login />} />
         <Route path="/specialists" element={<Specialists />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/services/boarding" element={<PetBoarding />} />
+        <Route path="/services/transport" element={<PetTransport />} />
+        <Route path="/services/restaurant" element={<PetRestaurant />} />
+        <Route path="/services/grooming" element={<PetGrooming />} />
+        <Route path="/services/photography" element={<PetPhotography />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/dashboard" element={
           <RoleGuard>
