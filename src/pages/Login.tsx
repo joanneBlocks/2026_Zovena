@@ -46,6 +46,15 @@ export default function Login() {
     <div className="min-h-screen flex flex-col items-center justify-center" style={{ backgroundColor: colors.bg }}>
       <div className="p-8 rounded-2xl shadow-md w-full max-w-md border" style={{ backgroundColor: colors.card, borderColor: colors.border }}>
 
+        {/* Back to Home */}
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center gap-1 text-sm mb-6 hover:opacity-70 transition-opacity"
+          style={{ color: colors.textSecondary }}
+        >
+          ← Back to home
+        </button>
+
         {/* Logo */}
         <div className="flex items-center justify-center mb-6">
           <img src="/logo.png" alt="Zovena logo" className="h-20 w-auto" />
