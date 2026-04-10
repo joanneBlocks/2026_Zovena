@@ -46,7 +46,7 @@ export default function Landing() {
       name: 'Maria Santos',
       role: 'Pet Owner',
       message: 'Zovena has completely changed how I manage my dog\'s health. I can see all his records in one place and never miss a vaccination again. It\'s simple, beautiful, and reliable.',
-      photo_url: '/testimonials/maria-santos.jpg',
+      photo_url: '/testimonials/maria-santos.png',
       approved: true,
       created_at: '',
     },
@@ -55,7 +55,7 @@ export default function Landing() {
       name: 'Dr. James Reyes',
       role: 'Veterinarian',
       message: 'As a vet, having a centralized platform where I can access all my patients\' records is invaluable. Zovena is intuitive and well-designed — exactly what modern veterinary practice needs.',
-      photo_url: '/testimonials/dr-reyes.jpg',
+      photo_url: '/testimonials/dr-james-reyes.png',
       approved: true,
       created_at: '',
     },
@@ -64,7 +64,7 @@ export default function Landing() {
       name: 'Anna Cruz',
       role: 'Pet Owner',
       message: 'I have three cats and keeping track of their individual health records used to be a nightmare. Zovena made it so easy. I love that my vet can update their records directly in the app.',
-      photo_url: '/testimonials/anna-cruz.jpg',
+      photo_url: '/testimonials/anna-cruz.png',
       approved: true,
       created_at: '',
     },
@@ -150,7 +150,7 @@ export default function Landing() {
             className="inline-block px-4 py-1 rounded-full text-xs font-medium text-white mb-6"
             style={{ backgroundColor: colors.teal }}
           >
-            🐾 Pet Wellness, Reimagined
+            Pet Wellness, Reimagined
           </div>
           <h1 className="text-4xl font-bold mb-6 leading-tight" style={{ color: '#FFFFFF' }}>
             The smarter way to manage<br />your pet's health
