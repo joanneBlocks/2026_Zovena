@@ -19,25 +19,25 @@ const specialists = [
     title: 'Small Animal Veterinarian',
     specialty: 'Dogs & Cats',
     experience: '12 years',
-    emoji: '🐕',
+    photo_url: '/specialists/dr-maria-santos.png',
     color: colors.indigo,
     bio: 'Specializes in preventive care, internal medicine, and surgery for dogs and cats. Known for her gentle approach and thorough diagnostics.',
   },
   {
-    name: 'Dr. James Reyes',
+    name: 'Dr. Janina Cortez',
     title: 'Exotic Animal Specialist',
     specialty: 'Reptiles & Birds',
     experience: '8 years',
-    emoji: '🦎',
+    photo_url: '/specialists/dr-janina-cortez.png',
     color: colors.teal,
     bio: 'Expert in exotic animal care including reptiles, birds, and small mammals. Certified in avian medicine and reptile surgery.',
   },
   {
-    name: 'Dr. Anna Cruz',
+    name: 'Dr. Anita Sy',
     title: 'Feline Specialist',
     specialty: 'Cats',
     experience: '10 years',
-    emoji: '🐈',
+    photo_url: '/specialists/dr-anita-sy.png',
     color: colors.coral,
     bio: 'Dedicated exclusively to feline health and behavior. Expert in cat-specific diseases, dental care, and stress-free handling techniques.',
   },
@@ -46,7 +46,7 @@ const specialists = [
     title: 'Animal Nutritionist',
     specialty: 'Diet & Wellness',
     experience: '6 years',
-    emoji: '🥗',
+    photo_url: '/specialists/dr-carlos-lim.png',
     color: colors.amber,
     bio: 'Provides personalized nutrition plans for pets of all species. Specializes in weight management, allergies, and senior pet diets.',
   },
@@ -55,7 +55,7 @@ const specialists = [
     title: 'Veterinary Dermatologist',
     specialty: 'Skin & Coat Health',
     experience: '9 years',
-    emoji: '🌿',
+    photo_url: '/specialists/dr-sofia-tan.png',
     color: colors.teal,
     bio: 'Expert in diagnosing and treating skin conditions, allergies, and coat disorders in cats, dogs, and exotic animals.',
   },
@@ -64,7 +64,7 @@ const specialists = [
     title: 'Animal Behaviorist',
     specialty: 'Behavior & Training',
     experience: '7 years',
-    emoji: '🧠',
+    photo_url: '/specialists/dr-miguel-flores.png',
     color: colors.indigo,
     bio: 'Certified animal behaviorist specializing in anxiety, aggression, and behavioral modification for pets of all ages.',
   },
@@ -84,17 +84,17 @@ export default function Specialists() {
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
           <img src="/logo.png" alt="Zovena" className="h-10 w-auto" />
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <button
             onClick={() => navigate('/services')}
-            className="text-sm font-medium hover:opacity-70 transition-opacity hidden md:block"
+            className="text-sm font-medium hover:opacity-70 transition-opacity"
             style={{ color: colors.textSecondary }}
           >
             Services
           </button>
           <button
             onClick={() => navigate('/shop')}
-            className="text-sm font-medium hover:opacity-70 transition-opacity hidden md:block"
+            className="text-sm font-medium hover:opacity-70 transition-opacity"
             style={{ color: colors.textSecondary }}
           >
             Shop
@@ -117,75 +117,108 @@ export default function Specialists() {
       </nav>
 
       {/* Hero */}
-      <section className="px-8 py-16 text-center max-w-3xl mx-auto">
-        <div
-          className="inline-block px-4 py-1 rounded-full text-xs font-medium text-white mb-6"
-          style={{ backgroundColor: colors.teal }}
-        >
-          🩺 Meet Our Team
+      <section
+        className="px-8 py-20 text-center relative"
+        style={{
+          backgroundImage: 'url(/specialists-bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+        }}
+      >
+        <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.55)' }} />
+        <div className="relative z-10 max-w-3xl mx-auto">
+          <div
+            className="inline-block px-4 py-1 rounded-full text-xs font-medium text-white mb-6"
+            style={{ backgroundColor: colors.teal }}
+          >
+            🩺 Meet Our Team
+          </div>
+          <h1 className="text-3xl font-bold mb-4" style={{ color: '#FFFFFF' }}>
+            Animal Care & Health Specialists
+          </h1>
+          <p className="text-base leading-relaxed" style={{ color: '#E5E7EB' }}>
+            Our network of experienced veterinarians and animal health specialists are dedicated
+            to providing the best care for your beloved pets.
+          </p>
         </div>
-        <h1 className="text-3xl font-bold mb-4" style={{ color: colors.textPrimary }}>
-          Animal Care & Health Specialists
-        </h1>
-        <p className="text-base leading-relaxed" style={{ color: colors.textSecondary }}>
-          Our network of experienced veterinarians and animal health specialists are dedicated
-          to providing the best care for your beloved pets.
-        </p>
       </section>
 
-      {/* Specialists Grid */}
-      <section className="px-8 pb-20 max-w-3xl mx-auto">
-        <div className="grid grid-cols-1 gap-6">
-          {specialists.map(specialist => (
-            <div
-              key={specialist.name}
-              className="p-6 rounded-2xl border flex gap-5 items-start"
-              style={{ backgroundColor: colors.card, borderColor: colors.border }}
-            >
+      {/* Specialists Grid — background image, white cards */}
+      <section
+        className="px-8 py-16"
+        style={{
+          backgroundImage: 'url(/specialists-bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+        }}
+      >
+        <div className="max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 gap-6">
+            {specialists.map(specialist => (
               <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0"
-                style={{ backgroundColor: `${specialist.color}18` }}
+                key={specialist.name}
+                className="p-6 rounded-2xl border flex gap-5 items-start"
+                style={{ backgroundColor: colors.card, borderColor: colors.border }}
               >
-                {specialist.emoji}
-              </div>
-              <div className="flex-1">
-                <div className="flex justify-between items-start flex-wrap gap-2">
-                  <div>
-                    <p className="font-bold" style={{ color: colors.textPrimary }}>
-                      {specialist.name}
-                    </p>
-                    <p className="text-sm font-medium" style={{ color: specialist.color }}>
-                      {specialist.title}
-                    </p>
+                {/* Photo or fallback */}
+                {specialist.photo_url ? (
+                  <img
+                    src={specialist.photo_url}
+                    alt={specialist.name}
+                    className="w-16 h-16 rounded-2xl object-cover flex-shrink-0"
+                  />
+                ) : (
+                  <div
+                    className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-bold text-white flex-shrink-0"
+                    style={{ backgroundColor: specialist.color }}
+                  >
+                    {specialist.name.charAt(0)}
                   </div>
-                  <div className="flex gap-2">
-                    <span
-                      className="text-xs px-3 py-1 rounded-full font-medium"
-                      style={{ backgroundColor: `${specialist.color}18`, color: specialist.color }}
-                    >
-                      {specialist.specialty}
-                    </span>
-                    <span
-                      className="text-xs px-3 py-1 rounded-full font-medium"
-                      style={{ backgroundColor: `${colors.success}18`, color: colors.success }}
-                    >
-                      {specialist.experience}
-                    </span>
+                )}
+
+                <div className="flex-1">
+                  <div className="flex justify-between items-start flex-wrap gap-2">
+                    <div>
+                      <p className="font-bold" style={{ color: colors.textPrimary }}>
+                        {specialist.name}
+                      </p>
+                      <p className="text-sm font-medium" style={{ color: specialist.color }}>
+                        {specialist.title}
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <span
+                        className="text-xs px-3 py-1 rounded-full font-medium"
+                        style={{ backgroundColor: `${specialist.color}18`, color: specialist.color }}
+                      >
+                        {specialist.specialty}
+                      </span>
+                      <span
+                        className="text-xs px-3 py-1 rounded-full font-medium"
+                        style={{ backgroundColor: `${colors.success}18`, color: colors.success }}
+                      >
+                        {specialist.experience}
+                      </span>
+                    </div>
                   </div>
+                  <p className="text-sm mt-3 leading-relaxed" style={{ color: colors.textSecondary }}>
+                    {specialist.bio}
+                  </p>
+                  <button
+                    onClick={() => navigate('/login')}
+                    className="mt-4 text-sm font-medium px-4 py-2 rounded-lg text-white transition-opacity hover:opacity-90"
+                    style={{ backgroundColor: specialist.color }}
+                  >
+                    Book a consultation
+                  </button>
                 </div>
-                <p className="text-sm mt-3 leading-relaxed" style={{ color: colors.textSecondary }}>
-                  {specialist.bio}
-                </p>
-                <button
-                  onClick={() => navigate('/login')}
-                  className="mt-4 text-sm font-medium px-4 py-2 rounded-lg text-white transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: specialist.color }}
-                >
-                  Book a consultation
-                </button>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
