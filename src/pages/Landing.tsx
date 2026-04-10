@@ -46,7 +46,7 @@ export default function Landing() {
       name: 'Maria Santos',
       role: 'Pet Owner',
       message: 'Zovena has completely changed how I manage my dog\'s health. I can see all his records in one place and never miss a vaccination again. It\'s simple, beautiful, and reliable.',
-      photo_url: null,
+      photo_url: '/testimonials/maria-santos.jpg',
       approved: true,
       created_at: '',
     },
@@ -55,7 +55,7 @@ export default function Landing() {
       name: 'Dr. James Reyes',
       role: 'Veterinarian',
       message: 'As a vet, having a centralized platform where I can access all my patients\' records is invaluable. Zovena is intuitive and well-designed — exactly what modern veterinary practice needs.',
-      photo_url: null,
+      photo_url: '/testimonials/dr-reyes.jpg',
       approved: true,
       created_at: '',
     },
@@ -64,13 +64,24 @@ export default function Landing() {
       name: 'Anna Cruz',
       role: 'Pet Owner',
       message: 'I have three cats and keeping track of their individual health records used to be a nightmare. Zovena made it so easy. I love that my vet can update their records directly in the app.',
-      photo_url: null,
+      photo_url: '/testimonials/anna-cruz.jpg',
       approved: true,
       created_at: '',
     },
   ]
 
   const displayTestimonials = testimonials.length > 0 ? testimonials : sampleTestimonials
+
+  const heroBg = {
+    backgroundImage: 'url(/hero-bg.png)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundAttachment: 'fixed',
+  }
+
+  const overlayDark = 'rgba(0,0,0,0.55)'
+  const overlayLight = 'rgba(0,0,0,0.40)'
 
   return (
     <div style={{ backgroundColor: colors.bg, color: colors.textPrimary }}>
@@ -123,35 +134,47 @@ export default function Landing() {
       </nav>
 
       {/* Hero Section */}
-      <section className="px-8 py-20 text-center max-w-3xl mx-auto">
-        <div
-          className="inline-block px-4 py-1 rounded-full text-xs font-medium text-white mb-6"
-          style={{ backgroundColor: colors.teal }}
-        >
-          🐾 Pet Wellness, Reimagined
-        </div>
-        <h1 className="text-4xl font-bold mb-6 leading-tight" style={{ color: colors.textPrimary }}>
-          The smarter way to manage<br />your pet's health
-        </h1>
-        <p className="text-lg mb-8 leading-relaxed" style={{ color: colors.textSecondary }}>
-          Zovena is a modern pet wellness platform that connects pet owners and veterinarians
-          through a secure, centralized system — making pet healthcare simpler, safer, and more organized.
-        </p>
-        <div className="flex justify-center gap-4 flex-wrap">
-          <button
-            onClick={() => navigate('/login')}
-            className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
-            style={{ backgroundColor: colors.indigo }}
-          >
-            🏠 I'm a Pet Owner
-          </button>
-          <button
-            onClick={() => navigate('/login')}
-            className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+      <section
+        className="px-8 py-32 text-center relative"
+        style={{
+          ...heroBg,
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div className="absolute inset-0" style={{ backgroundColor: overlayDark }} />
+        <div className="relative z-10 max-w-3xl mx-auto">
+          <div
+            className="inline-block px-4 py-1 rounded-full text-xs font-medium text-white mb-6"
             style={{ backgroundColor: colors.teal }}
           >
-            🩺 I'm a Veterinarian
-          </button>
+            🐾 Pet Wellness, Reimagined
+          </div>
+          <h1 className="text-4xl font-bold mb-6 leading-tight" style={{ color: '#FFFFFF' }}>
+            The smarter way to manage<br />your pet's health
+          </h1>
+          <p className="text-lg mb-8 leading-relaxed" style={{ color: '#E5E7EB' }}>
+            Zovena is a modern pet wellness platform that connects pet owners and veterinarians
+            through a secure, centralized system — making pet healthcare simpler, safer, and more organized.
+          </p>
+          <div className="flex justify-center gap-4 flex-wrap">
+            <button
+              onClick={() => navigate('/login')}
+              className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+              style={{ backgroundColor: colors.indigo }}
+            >
+              🏠 I'm a Pet Owner
+            </button>
+            <button
+              onClick={() => navigate('/login')}
+              className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+              style={{ backgroundColor: colors.teal }}
+            >
+              🩺 I'm a Veterinarian
+            </button>
+          </div>
         </div>
       </section>
 
@@ -176,80 +199,86 @@ export default function Landing() {
       </section>
 
       {/* Features Section */}
-      <section className="px-8 py-20 max-w-3xl mx-auto">
-        <h2 className="text-2xl font-bold text-center mb-2" style={{ color: colors.textPrimary }}>
-          Everything you need in one place
-        </h2>
-        <p className="text-center mb-12 text-sm" style={{ color: colors.textSecondary }}>
-          Designed for both pet owners and veterinarians — from the ground up.
-        </p>
-        <div className="grid grid-cols-1 gap-6">
-          {[
-            {
-              emoji: '🔐',
-              title: 'Role-Based Access Control',
-              description: 'Pet owners and veterinarians each get a tailored experience. Access is enforced at the database level — not just the UI — using Supabase Row Level Security policies.',
-              color: colors.indigo,
-            },
-            {
-              emoji: '🐾',
-              title: 'Pet Profile Management',
-              description: 'Create detailed profiles for each pet including name, species, age, and photo. Owners manage their own pets while vets get a full view across all registered animals.',
-              color: colors.teal,
-            },
-            {
-              emoji: '📋',
-              title: 'Medical Records',
-              description: 'Veterinarians can create and update medical records including visit notes, diagnoses, and vaccinations. Owners have read-only access to stay informed about their pet\'s health.',
-              color: colors.coral,
-            },
-            {
-              emoji: '💉',
-              title: 'Vaccination Tracking',
-              description: 'Keep a clear record of every vaccination administered. Never lose track of what your pet has received and when — all stored securely in the cloud.',
-              color: colors.amber,
-            },
-            {
-              emoji: '📱',
-              title: 'Mobile-First Design',
-              description: 'Zovena is designed primarily for mobile use — with a clean, touch-friendly interface that works beautifully on any device, from phones to desktops.',
-              color: colors.indigo,
-            },
-            {
-              emoji: '☁️',
-              title: 'Cloud-Powered & Secure',
-              description: 'Built on Supabase with PostgreSQL, your data is stored securely in the cloud with real-time access from anywhere. No data is ever lost or inaccessible.',
-              color: colors.teal,
-            },
-          ].map(feature => (
-            <div
-              key={feature.title}
-              className="p-6 rounded-2xl border flex gap-5 items-start"
-              style={{ backgroundColor: colors.card, borderColor: colors.border }}
-            >
+      <section
+        className="px-8 py-20 relative"
+        style={heroBg}
+      >
+        <div className="absolute inset-0" style={{ backgroundColor: overlayDark }} />
+        <div className="relative z-10 max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-center mb-2" style={{ color: '#FFFFFF' }}>
+            Everything you need in one place
+          </h2>
+          <p className="text-center mb-12 text-sm" style={{ color: '#E5E7EB' }}>
+            Designed for both pet owners and veterinarians — from the ground up.
+          </p>
+          <div className="grid grid-cols-1 gap-6">
+            {[
+              {
+                emoji: '🔐',
+                title: 'Role-Based Access Control',
+                description: 'Pet owners and veterinarians each get a tailored experience. Access is enforced at the database level — not just the UI — using Supabase Row Level Security policies.',
+                color: colors.indigo,
+              },
+              {
+                emoji: '🐾',
+                title: 'Pet Profile Management',
+                description: 'Create detailed profiles for each pet including name, species, age, and photo. Owners manage their own pets while vets get a full view across all registered animals.',
+                color: colors.teal,
+              },
+              {
+                emoji: '📋',
+                title: 'Medical Records',
+                description: 'Veterinarians can create and update medical records including visit notes, diagnoses, and vaccinations. Owners have read-only access to stay informed about their pet\'s health.',
+                color: colors.coral,
+              },
+              {
+                emoji: '💉',
+                title: 'Vaccination Tracking',
+                description: 'Keep a clear record of every vaccination administered. Never lose track of what your pet has received and when — all stored securely in the cloud.',
+                color: colors.amber,
+              },
+              {
+                emoji: '📱',
+                title: 'Mobile-First Design',
+                description: 'Zovena is designed primarily for mobile use — with a clean, touch-friendly interface that works beautifully on any device, from phones to desktops.',
+                color: colors.indigo,
+              },
+              {
+                emoji: '☁️',
+                title: 'Cloud-Powered & Secure',
+                description: 'Built on Supabase with PostgreSQL, your data is stored securely in the cloud with real-time access from anywhere. No data is ever lost or inaccessible.',
+                color: colors.teal,
+              },
+            ].map(feature => (
               <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
-                style={{ backgroundColor: `${feature.color}18` }}
+                key={feature.title}
+                className="p-6 rounded-2xl border flex gap-5 items-start"
+                style={{ backgroundColor: 'rgba(255,255,255,0.10)', borderColor: 'rgba(255,255,255,0.20)' }}
               >
-                {feature.emoji}
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
+                  style={{ backgroundColor: `${feature.color}40` }}
+                >
+                  {feature.emoji}
+                </div>
+                <div>
+                  <p className="font-semibold mb-1" style={{ color: '#FFFFFF' }}>
+                    {feature.title}
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#E5E7EB' }}>
+                    {feature.description}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="font-semibold mb-1" style={{ color: colors.textPrimary }}>
-                  {feature.title}
-                </p>
-                <p className="text-sm leading-relaxed" style={{ color: colors.textSecondary }}>
-                  {feature.description}
-                </p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
       {/* How It Works Section */}
       <section
-        className="px-8 py-20 border-t"
-        style={{ backgroundColor: colors.card, borderColor: colors.border }}
+        className="px-8 py-20"
+        style={{ backgroundColor: colors.card }}
       >
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-2" style={{ color: colors.textPrimary }}>
@@ -311,92 +340,98 @@ export default function Landing() {
       </section>
 
       {/* For Owners vs Vets Section */}
-      <section className="px-8 py-20 max-w-3xl mx-auto">
-        <h2 className="text-2xl font-bold text-center mb-2" style={{ color: colors.textPrimary }}>
-          Built for everyone involved
-        </h2>
-        <p className="text-center mb-12 text-sm" style={{ color: colors.textSecondary }}>
-          One platform, two powerful experiences.
-        </p>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div
-            className="p-6 rounded-2xl border"
-            style={{ backgroundColor: colors.card, borderColor: colors.indigo }}
-          >
+      <section
+        className="px-8 py-20 relative"
+        style={heroBg}
+      >
+        <div className="absolute inset-0" style={{ backgroundColor: overlayLight }} />
+        <div className="relative z-10 max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-center mb-2" style={{ color: '#FFFFFF' }}>
+            Built for everyone involved
+          </h2>
+          <p className="text-center mb-12 text-sm" style={{ color: '#E5E7EB' }}>
+            One platform, two powerful experiences.
+          </p>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4"
-              style={{ backgroundColor: `${colors.indigo}18` }}
+              className="p-6 rounded-2xl border"
+              style={{ backgroundColor: 'rgba(255,255,255,0.12)', borderColor: colors.indigo }}
             >
-              🏠
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4"
+                style={{ backgroundColor: `${colors.indigo}40` }}
+              >
+                🏠
+              </div>
+              <p className="font-bold text-lg mb-3" style={{ color: '#FFFFFF' }}>
+                Pet Owners
+              </p>
+              <ul className="space-y-2">
+                {[
+                  'Create and manage pet profiles',
+                  'Upload pet photos',
+                  'View medical records and history',
+                  'Track vaccinations',
+                  'Access from any device',
+                ].map(item => (
+                  <li key={item} className="flex items-center gap-2 text-sm" style={{ color: '#E5E7EB' }}>
+                    <span style={{ color: colors.success }}>✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => navigate('/login')}
+                className="mt-6 w-full text-white py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-90"
+                style={{ backgroundColor: colors.indigo }}
+              >
+                Get started as owner
+              </button>
             </div>
-            <p className="font-bold text-lg mb-3" style={{ color: colors.indigo }}>
-              Pet Owners
-            </p>
-            <ul className="space-y-2">
-              {[
-                'Create and manage pet profiles',
-                'Upload pet photos',
-                'View medical records and history',
-                'Track vaccinations',
-                'Access from any device',
-              ].map(item => (
-                <li key={item} className="flex items-center gap-2 text-sm" style={{ color: colors.textSecondary }}>
-                  <span style={{ color: colors.success }}>✓</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <button
-              onClick={() => navigate('/login')}
-              className="mt-6 w-full text-white py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-90"
-              style={{ backgroundColor: colors.indigo }}
-            >
-              Get started as owner
-            </button>
-          </div>
 
-          <div
-            className="p-6 rounded-2xl border"
-            style={{ backgroundColor: colors.card, borderColor: colors.teal }}
-          >
             <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4"
-              style={{ backgroundColor: `${colors.teal}18` }}
+              className="p-6 rounded-2xl border"
+              style={{ backgroundColor: 'rgba(255,255,255,0.12)', borderColor: colors.teal }}
             >
-              🩺
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4"
+                style={{ backgroundColor: `${colors.teal}40` }}
+              >
+                🩺
+              </div>
+              <p className="font-bold text-lg mb-3" style={{ color: '#FFFFFF' }}>
+                Veterinarians
+              </p>
+              <ul className="space-y-2">
+                {[
+                  'View all registered pets',
+                  'See owner contact details',
+                  'Create and update medical records',
+                  'Record vaccinations and visits',
+                  'Full read access to all profiles',
+                ].map(item => (
+                  <li key={item} className="flex items-center gap-2 text-sm" style={{ color: '#E5E7EB' }}>
+                    <span style={{ color: colors.success }}>✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => navigate('/login')}
+                className="mt-6 w-full text-white py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-90"
+                style={{ backgroundColor: colors.teal }}
+              >
+                Get started as vet
+              </button>
             </div>
-            <p className="font-bold text-lg mb-3" style={{ color: colors.teal }}>
-              Veterinarians
-            </p>
-            <ul className="space-y-2">
-              {[
-                'View all registered pets',
-                'See owner contact details',
-                'Create and update medical records',
-                'Record vaccinations and visits',
-                'Full read access to all profiles',
-              ].map(item => (
-                <li key={item} className="flex items-center gap-2 text-sm" style={{ color: colors.textSecondary }}>
-                  <span style={{ color: colors.success }}>✓</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <button
-              onClick={() => navigate('/login')}
-              className="mt-6 w-full text-white py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-90"
-              style={{ backgroundColor: colors.teal }}
-            >
-              Get started as vet
-            </button>
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
       <section
-        className="px-8 py-20 border-t"
-        style={{ backgroundColor: colors.card, borderColor: colors.border }}
+        className="px-8 py-20"
+        style={{ backgroundColor: colors.card }}
       >
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-2" style={{ color: colors.textPrimary }}>
@@ -471,29 +506,32 @@ export default function Landing() {
 
       {/* CTA Section */}
       <section
-        className="px-8 py-20 text-center border-t"
-        style={{ backgroundColor: colors.indigo }}
+        className="px-8 py-20 text-center relative"
+        style={heroBg}
       >
-        <h2 className="text-2xl font-bold mb-4 text-white">
-          Ready to get started?
-        </h2>
-        <p className="text-sm mb-8" style={{ color: '#c7d2fe' }}>
-          Join Zovena today and bring your pet's health records into the digital age.
-        </p>
-        <div className="flex justify-center gap-4 flex-wrap">
-          <button
-            onClick={() => navigate('/login')}
-            className="text-sm font-medium px-6 py-3 rounded-xl transition-opacity hover:opacity-90 text-white border border-white"
-          >
-            Sign in
-          </button>
-          <button
-            onClick={() => navigate('/login')}
-            className="text-sm font-medium px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
-            style={{ backgroundColor: colors.card, color: colors.indigo }}
-          >
-            Create free account →
-          </button>
+        <div className="absolute inset-0" style={{ backgroundColor: overlayDark }} />
+        <div className="relative z-10">
+          <h2 className="text-2xl font-bold mb-4 text-white">
+            Ready to get started?
+          </h2>
+          <p className="text-sm mb-8" style={{ color: '#E5E7EB' }}>
+            Join Zovena today and bring your pet's health records into the digital age.
+          </p>
+          <div className="flex justify-center gap-4 flex-wrap">
+            <button
+              onClick={() => navigate('/login')}
+              className="text-sm font-medium px-6 py-3 rounded-xl transition-opacity hover:opacity-90 text-white border border-white"
+            >
+              Sign in
+            </button>
+            <button
+              onClick={() => navigate('/login')}
+              className="text-sm font-medium px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+              style={{ backgroundColor: colors.card, color: colors.indigo }}
+            >
+              Create free account →
+            </button>
+          </div>
         </div>
       </section>
 
