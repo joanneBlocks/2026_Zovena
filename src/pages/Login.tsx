@@ -18,6 +18,7 @@ const colors = {
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [displayName, setDisplayName] = useState('')
   const [role, setRole] = useState<Role>('owner')
   const [isSignUp, setIsSignUp] = useState(false)
   const [error, setError] = useState('')
@@ -28,10 +29,18 @@ export default function Login() {
     setError('')
 
     if (isSignUp) {
+      if (!displayName.trim()) {
+        return setError('Please enter a public display name.')
+      }
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { role } },
+        options: {
+          data: {
+            role,
+            display_name: displayName.trim(),
+          },
+        },
       })
       if (error) return setError(error.message)
     } else {
@@ -81,26 +90,48 @@ export default function Login() {
           />
 
           {isSignUp && (
-            <div>
-              <p className="text-sm mb-2" style={{ color: colors.textSecondary }}>I am a...</p>
-              <div className="flex gap-3">
-                {(['owner', 'vet'] as Role[]).map(r => (
-                  <button
-                    type="button"
-                    key={r}
-                    onClick={() => setRole(r)}
-                    className="flex-1 py-2 rounded-lg border text-sm font-medium transition-colors"
-                    style={{
-                      backgroundColor: role === r ? colors.indigo : 'transparent',
-                      color: role === r ? '#fff' : colors.textSecondary,
-                      borderColor: role === r ? colors.indigo : colors.border,
-                    }}
-                  >
-                    {r === 'owner' ? '🏠 Pet Owner' : '🩺 Veterinarian'}
-                  </button>
-                ))}
+            <>
+              {/* Display Name */}
+              <div>
+                <label className="block text-sm mb-1" style={{ color: colors.textSecondary }}>
+                  Public display name
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Maria S. or Dr. James"
+                  value={displayName}
+                  onChange={e => setDisplayName(e.target.value)}
+                  className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
+                  style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
+                  required
+                />
+                <p className="text-xs mt-1" style={{ color: colors.textSecondary }}>
+                  This is the name shown on testimonials. Your email stays private.
+                </p>
               </div>
-            </div>
+
+              {/* Role Selection */}
+              <div>
+                <p className="text-sm mb-2" style={{ color: colors.textSecondary }}>I am a...</p>
+                <div className="flex gap-3">
+                  {(['owner', 'vet'] as Role[]).map(r => (
+                    <button
+                      type="button"
+                      key={r}
+                      onClick={() => setRole(r)}
+                      className="flex-1 py-2 rounded-lg border text-sm font-medium transition-colors"
+                      style={{
+                        backgroundColor: role === r ? colors.indigo : 'transparent',
+                        color: role === r ? '#fff' : colors.textSecondary,
+                        borderColor: role === r ? colors.indigo : colors.border,
+                      }}
+                    >
+                      {r === 'owner' ? '🏠 Pet Owner' : '🩺 Veterinarian'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </>
           )}
 
           {error && (
