@@ -4,6 +4,7 @@ export interface Profile {
   id: string
   email: string
   role: Role
+  display_name: string | null
   created_at: string
 }
 
