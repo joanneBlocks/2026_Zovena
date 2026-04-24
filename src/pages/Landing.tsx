@@ -72,7 +72,11 @@ export default function Landing() {
     },
   ]
 
-  const displayTestimonials = testimonials.length > 0 ? testimonials : sampleTestimonials
+  const mergedTestimonials = [
+    ...testimonials,
+    ...sampleTestimonials.slice(0, Math.max(0, 3 - testimonials.length)),
+  ]
+  const displayTestimonials = mergedTestimonials.slice(0, 3)
 
   const heroBg = {
     backgroundImage: 'url(/hero-bg.png)',
@@ -121,7 +125,7 @@ export default function Landing() {
           {profile ? (
             <button
               onClick={() => navigate('/dashboard')}
-              className="text-sm font-medium text-white px-4 py-2 rounded-lg transition-opacity hover:opacity-90"
+              className="text-base font-semibold text-white px-8 py-4 rounded-xl transition-opacity hover:opacity-90"
               style={{ backgroundColor: colors.teal }}
             >
               My Dashboard →
@@ -130,14 +134,14 @@ export default function Landing() {
             <>
               <button
                 onClick={() => navigate('/login')}
-                className="text-sm font-medium px-4 py-2 rounded-lg transition-opacity hover:opacity-70"
+                className="text-base font-medium px-8 py-4 rounded-xl transition-opacity hover:opacity-70"
                 style={{ color: colors.textSecondary }}
               >
                 Sign in
               </button>
               <button
                 onClick={() => navigate('/login')}
-                className="text-sm font-medium text-white px-4 py-2 rounded-lg transition-opacity hover:opacity-90"
+                className="text-base font-semibold text-white px-8 py-4 rounded-xl transition-opacity hover:opacity-90"
                 style={{ backgroundColor: colors.indigo }}
               >
                 Get started
@@ -177,7 +181,7 @@ export default function Landing() {
             {profile ? (
               <button
                 onClick={() => navigate('/dashboard')}
-                className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+                className="text-base font-semibold text-white px-8 py-4 rounded-xl transition-opacity hover:opacity-90"
                 style={{ backgroundColor: colors.teal }}
               >
                 Go to my dashboard →
@@ -186,14 +190,14 @@ export default function Landing() {
               <>
                 <button
                   onClick={() => navigate('/login')}
-                  className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+                  className="text-base font-semibold text-white px-8 py-4 rounded-xl transition-opacity hover:opacity-90"
                   style={{ backgroundColor: colors.indigo }}
                 >
                   🏠 I'm a Pet Owner
                 </button>
                 <button
                   onClick={() => navigate('/login')}
-                  className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+                  className="text-base font-semibold text-white px-8 py-4 rounded-xl transition-opacity hover:opacity-90"
                   style={{ backgroundColor: colors.teal }}
                 >
                   🩺 I'm a Veterinarian
@@ -408,7 +412,7 @@ export default function Landing() {
               </ul>
               <button
                 onClick={() => navigate('/login')}
-                className="mt-6 w-full text-white py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-90"
+                className="mt-6 w-full text-white py-4 rounded-xl text-base font-semibold transition-opacity hover:opacity-90"
                 style={{ backgroundColor: colors.indigo }}
               >
                 Get started as owner
@@ -444,7 +448,7 @@ export default function Landing() {
               </ul>
               <button
                 onClick={() => navigate('/login')}
-                className="mt-6 w-full text-white py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-90"
+                className="mt-6 w-full text-white py-4 rounded-xl text-base font-semibold transition-opacity hover:opacity-90"
                 style={{ backgroundColor: colors.teal }}
               >
                 Get started as vet
@@ -521,7 +525,7 @@ export default function Landing() {
             </p>
             <button
               onClick={() => navigate(profile ? '/testimonials' : '/login')}
-              className="text-sm font-medium text-white px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+              className="text-base font-semibold text-white px-8 py-4 rounded-xl transition-opacity hover:opacity-90"
               style={{ backgroundColor: colors.indigo }}
             >
               {profile ? 'Share your experience →' : 'Sign in to share your experience →'}
@@ -547,7 +551,7 @@ export default function Landing() {
             {profile ? (
               <button
                 onClick={() => navigate('/dashboard')}
-                className="text-sm font-medium px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+                className="text-base font-semibold px-8 py-4 rounded-xl transition-opacity hover:opacity-90"
                 style={{ backgroundColor: colors.card, color: colors.indigo }}
               >
                 Go to my dashboard →
@@ -556,13 +560,13 @@ export default function Landing() {
               <>
                 <button
                   onClick={() => navigate('/login')}
-                  className="text-sm font-medium px-6 py-3 rounded-xl transition-opacity hover:opacity-90 text-white border border-white"
+                  className="text-base font-semibold px-8 py-4 rounded-xl transition-opacity hover:opacity-90 text-white border-2 border-white"
                 >
                   Sign in
                 </button>
                 <button
                   onClick={() => navigate('/login')}
-                  className="text-sm font-medium px-6 py-3 rounded-xl transition-opacity hover:opacity-90"
+                  className="text-base font-semibold px-8 py-4 rounded-xl transition-opacity hover:opacity-90"
                   style={{ backgroundColor: colors.card, color: colors.indigo }}
                 >
                   Create free account →
