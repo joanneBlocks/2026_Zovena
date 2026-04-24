@@ -43,7 +43,7 @@ export default function Testimonials() {
   useEffect(() => {
     fetchTestimonials()
     if (profile) {
-      setTName(profile.email)
+      setTName(profile.display_name ?? '')
       setTRole(profile.role === 'vet' ? 'Veterinarian' : 'Pet Owner')
     }
   }, [profile])
@@ -137,15 +137,23 @@ export default function Testimonials() {
                 Share your experience
               </h2>
               <form onSubmit={handleSubmit} className="space-y-3">
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  value={tName}
-                  onChange={e => setTName(e.target.value)}
-                  className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
-                  style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
-                  required
-                />
+                <div>
+                  <label className="block text-sm mb-1" style={{ color: colors.textSecondary }}>
+                    Display name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Your public display name"
+                    value={tName}
+                    onChange={e => setTName(e.target.value)}
+                    className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
+                    style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
+                    required
+                  />
+                  <p className="text-xs mt-1" style={{ color: colors.textSecondary }}>
+                    Your email address will never be shown publicly.
+                  </p>
+                </div>
                 <select
                   value={tRole}
                   onChange={e => setTRole(e.target.value)}
