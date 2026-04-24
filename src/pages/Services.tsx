@@ -148,90 +148,113 @@ export default function Services() {
       </nav>
 
       {/* Hero */}
-      <section className="px-8 py-16 text-center max-w-3xl mx-auto">
-        <div
-          className="inline-block px-4 py-1 rounded-full text-xs font-medium text-white mb-6"
-          style={{ backgroundColor: colors.coral }}
-        >
-          🐾 Our Services
+      <section
+        className="px-8 py-20 text-center relative"
+        style={{
+          backgroundImage: 'url(/services-bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+        }}
+      >
+        <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.55)' }} />
+        <div className="relative z-10 max-w-3xl mx-auto">
+          <div
+            className="inline-block px-4 py-1 rounded-full text-xs font-medium text-white mb-6"
+            style={{ backgroundColor: colors.coral }}
+          >
+            🐾 Our Services
+          </div>
+          <h1 className="text-3xl font-bold mb-4" style={{ color: '#FFFFFF' }}>
+            Everything your pet needs
+          </h1>
+          <p className="text-base leading-relaxed" style={{ color: '#E5E7EB' }}>
+            From boarding and grooming to transport, dining, and photography — Zovena offers
+            a complete suite of services designed to keep your pet happy, healthy, and well cared for.
+          </p>
         </div>
-        <h1 className="text-3xl font-bold mb-4" style={{ color: colors.textPrimary }}>
-          Everything your pet needs
-        </h1>
-        <p className="text-base leading-relaxed" style={{ color: colors.textSecondary }}>
-          From boarding and grooming to transport, dining, and photography — Zovena offers
-          a complete suite of services designed to keep your pet happy, healthy, and well cared for.
-        </p>
       </section>
 
       {/* Services List */}
-      <section className="px-8 pb-20 max-w-3xl mx-auto">
-        <div className="grid grid-cols-1 gap-8">
-          {services.map(service => (
-            <div
-              key={service.title}
-              className="rounded-2xl border overflow-hidden"
-              style={{ backgroundColor: colors.card, borderColor: colors.border }}
-            >
-              {/* Service Header */}
+      <section
+        className="px-8 py-20"
+        style={{
+          backgroundImage: 'url(/services-bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+        }}
+      >
+        <div className="max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 gap-8">
+            {services.map(service => (
               <div
-                className="p-6 flex items-center gap-4"
-                style={{ backgroundColor: `${service.color}12` }}
+                key={service.title}
+                className="rounded-2xl border overflow-hidden"
+                style={{ backgroundColor: colors.card, borderColor: colors.border }}
               >
+                {/* Service Header */}
                 <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0"
-                  style={{ backgroundColor: `${service.color}20` }}
+                  className="p-6 flex items-center gap-4"
+                  style={{ backgroundColor: `${service.color}12` }}
                 >
-                  {service.emoji}
-                </div>
-                <div className="flex-1">
-                  <p className="font-bold text-lg" style={{ color: colors.textPrimary }}>
-                    {service.title}
-                  </p>
-                  <p className="text-sm font-medium" style={{ color: service.color }}>
-                    {service.tagline}
-                  </p>
-                </div>
-                <span
-                  className="text-xs font-medium px-3 py-1 rounded-full text-white flex-shrink-0"
-                  style={{ backgroundColor: service.color }}
-                >
-                  {service.price}
-                </span>
-              </div>
-
-              {/* Service Body */}
-              <div className="p-6">
-                <p className="text-sm leading-relaxed mb-4" style={{ color: colors.textSecondary }}>
-                  {service.description}
-                </p>
-                <div className="grid grid-cols-1 gap-2 mb-6">
-                  {service.features.map(feature => (
-                    <div key={feature} className="flex items-center gap-2 text-sm" style={{ color: colors.textSecondary }}>
-                      <span style={{ color: service.color }}>✓</span>
-                      {feature}
-                    </div>
-                  ))}
-                </div>
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => navigate(service.route)}
-                    className="text-sm font-medium text-white px-5 py-2 rounded-lg transition-opacity hover:opacity-90"
+                  <div
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0"
+                    style={{ backgroundColor: `${service.color}20` }}
+                  >
+                    {service.emoji}
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-bold text-lg" style={{ color: colors.textPrimary }}>
+                      {service.title}
+                    </p>
+                    <p className="text-sm font-medium" style={{ color: service.color }}>
+                      {service.tagline}
+                    </p>
+                  </div>
+                  <span
+                    className="text-xs font-medium px-3 py-1 rounded-full text-white flex-shrink-0"
                     style={{ backgroundColor: service.color }}
                   >
-                    Learn more
-                  </button>
-                  <button
-                    onClick={() => navigate('/login')}
-                    className="text-sm font-medium px-5 py-2 rounded-lg transition-opacity hover:opacity-70"
-                    style={{ color: service.color, border: `1px solid ${service.color}` }}
-                  >
-                    Book {service.title}
-                  </button>
+                    {service.price}
+                  </span>
+                </div>
+
+                {/* Service Body */}
+                <div className="p-6">
+                  <p className="text-sm leading-relaxed mb-4" style={{ color: colors.textSecondary }}>
+                    {service.description}
+                  </p>
+                  <div className="grid grid-cols-1 gap-2 mb-6">
+                    {service.features.map(feature => (
+                      <div key={feature} className="flex items-center gap-2 text-sm" style={{ color: colors.textSecondary }}>
+                        <span style={{ color: service.color }}>✓</span>
+                        {feature}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => navigate(service.route)}
+                      className="text-sm font-medium text-white px-5 py-2 rounded-lg transition-opacity hover:opacity-90"
+                      style={{ backgroundColor: service.color }}
+                    >
+                      Learn more
+                    </button>
+                    <button
+                      onClick={() => navigate('/login')}
+                      className="text-sm font-medium px-5 py-2 rounded-lg transition-opacity hover:opacity-70"
+                      style={{ color: service.color, border: `1px solid ${service.color}` }}
+                    >
+                      Book {service.title}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
