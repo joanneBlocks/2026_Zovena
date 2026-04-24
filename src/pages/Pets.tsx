@@ -66,21 +66,15 @@ export default function Pets() {
   function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const file = e.target.files?.[0] ?? null
     setPhoto(file)
-    if (file) {
-      setPhotoPreview(URL.createObjectURL(file))
-    } else {
-      setPhotoPreview(null)
-    }
+    if (file) setPhotoPreview(URL.createObjectURL(file))
+    else setPhotoPreview(null)
   }
 
   function handleEditPhotoChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const file = e.target.files?.[0] ?? null
     setEditPhoto(file)
-    if (file) {
-      setEditPhotoPreview(URL.createObjectURL(file))
-    } else {
-      setEditPhotoPreview(null)
-    }
+    if (file) setEditPhotoPreview(URL.createObjectURL(file))
+    else setEditPhotoPreview(null)
   }
 
   function startEditing(pet: Pet): void {
@@ -111,17 +105,13 @@ export default function Pets() {
 
     try {
       let photoUrl: string | undefined
-      if (photo) {
-        photoUrl = await uploadPetPhoto(photo, profile.id)
-      }
+      if (photo) photoUrl = await uploadPetPhoto(photo, profile.id)
 
       const newPet = await createPet(
-        name,
-        species,
+        name, species,
         parseInt(ageYears) || 0,
         parseInt(ageMonths) || 0,
-        profile.id,
-        photoUrl
+        profile.id, photoUrl
       )
       setPets(prev => [newPet, ...prev])
       setName('')
@@ -146,14 +136,10 @@ export default function Pets() {
 
     try {
       let photoUrl: string | null | undefined = undefined
-      if (editPhoto) {
-        photoUrl = await uploadPetPhoto(editPhoto, profile.id)
-      }
+      if (editPhoto) photoUrl = await uploadPetPhoto(editPhoto, profile.id)
 
       const updated = await updatePet(
-        editingPet.id,
-        editName,
-        editSpecies,
+        editingPet.id, editName, editSpecies,
         parseInt(editAgeYears) || 0,
         parseInt(editAgeMonths) || 0,
         photoUrl
@@ -177,18 +163,10 @@ export default function Pets() {
   }
 
   const speciesEmoji: Record<string, string> = {
-    dog: '🐕',
-    cat: '🐈',
-    bird: '🐦',
-    rabbit: '🐇',
-    fish: '🐟',
-    hamster: '🐹',
-    'guinea pig': '🐹',
-    hedgehog: '🦔',
-    gecko: '🦎',
-    chinchilla: '🐭',
-    'sugar glider': '🐿️',
-    other: '🐾',
+    dog: '🐕', cat: '🐈', bird: '🐦', rabbit: '🐇',
+    fish: '🐟', hamster: '🐹', 'guinea pig': '🐹',
+    hedgehog: '🦔', gecko: '🦎', chinchilla: '🐭',
+    'sugar glider': '🐿️', other: '🐾',
   }
 
   function getEmoji(species: string): string {
@@ -299,8 +277,7 @@ export default function Pets() {
                     onChange={e => setAgeYears(e.target.value)}
                     className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
                     style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
-                    min="0"
-                    max="100"
+                    min="0" max="100"
                   />
                   <input
                     type="number"
@@ -309,8 +286,7 @@ export default function Pets() {
                     onChange={e => setAgeMonths(e.target.value)}
                     className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
                     style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
-                    min="0"
-                    max="11"
+                    min="0" max="11"
                   />
                 </div>
                 <div>
@@ -369,10 +345,7 @@ export default function Pets() {
                   value={editSpecies}
                   onChange={e => setEditSpecies(e.target.value)}
                   className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
-                  style={{
-                    border: `1px solid ${colors.border}`,
-                    color: colors.textPrimary
-                  }}
+                  style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
                   required
                 >
                   {speciesOptions}
@@ -385,8 +358,7 @@ export default function Pets() {
                     onChange={e => setEditAgeYears(e.target.value)}
                     className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
                     style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
-                    min="0"
-                    max="100"
+                    min="0" max="100"
                   />
                   <input
                     type="number"
@@ -395,8 +367,7 @@ export default function Pets() {
                     onChange={e => setEditAgeMonths(e.target.value)}
                     className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2"
                     style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
-                    min="0"
-                    max="11"
+                    min="0" max="11"
                   />
                 </div>
                 <div>
@@ -470,7 +441,10 @@ export default function Pets() {
                   }}
                 >
                   <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-4">
+                    <div
+                      className="flex items-center gap-4 flex-1 cursor-pointer"
+                      onClick={() => navigate(`/pets/${pet.id}/records`)}
+                    >
                       {pet.photo_url ? (
                         <img
                           src={pet.photo_url}
@@ -493,10 +467,13 @@ export default function Pets() {
                             Owner: {pet.profiles.email}
                           </p>
                         )}
+                        <p className="text-xs mt-1 font-medium" style={{ color: colors.indigo }}>
+                          📋 View medical records →
+                        </p>
                       </div>
                     </div>
                     {profile?.role === 'owner' && (
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 ml-2">
                         <button
                           onClick={() => startEditing(pet)}
                           className="text-xs px-3 py-1 rounded-lg transition-opacity hover:opacity-70"
