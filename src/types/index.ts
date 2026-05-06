@@ -32,3 +32,16 @@ export interface MedicalRecord {
   updated_at: string
   profiles?: { email: string }
 }
+
+export interface AuditLog {
+  id: string
+  pet_id: string
+  record_id: string
+  edited_by: string
+  action: 'created' | 'updated' | 'deleted'
+  field_changed: string | null
+  old_value: string | null
+  new_value: string | null
+  created_at: string
+  profiles?: { email: string }
+}
