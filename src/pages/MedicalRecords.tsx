@@ -203,8 +203,8 @@ export default function MedicalRecords() {
           placeholder="Diagnosis, treatment, observations..."
           value={formNotes}
           onChange={e => setFormNotes(e.target.value)}
-          rows={3}
-          className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 resize-none"
+          rows={6}
+          className="w-full rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 resize-y"
           style={{ border: `1px solid ${colors.border}`, color: colors.textPrimary }}
         />
       </div>
@@ -421,10 +421,13 @@ export default function MedicalRecords() {
                         className="p-3 rounded-lg"
                         style={{ backgroundColor: colors.bg }}
                       >
-                        <p className="text-xs font-medium mb-1" style={{ color: colors.textSecondary }}>
+                        <p className="text-xs font-medium mb-2" style={{ color: colors.textSecondary }}>
                           Medical notes
                         </p>
-                        <p className="text-sm" style={{ color: colors.textPrimary }}>
+                        <p
+                          className="text-sm leading-relaxed"
+                          style={{ color: colors.textPrimary, whiteSpace: 'pre-wrap' }}
+                        >
                           {record.notes}
                         </p>
                       </div>
@@ -434,10 +437,13 @@ export default function MedicalRecords() {
                         className="p-3 rounded-lg"
                         style={{ backgroundColor: colors.bg }}
                       >
-                        <p className="text-xs font-medium mb-1" style={{ color: colors.textSecondary }}>
+                        <p className="text-xs font-medium mb-2" style={{ color: colors.textSecondary }}>
                           💉 Vaccinations
                         </p>
-                        <p className="text-sm" style={{ color: colors.textPrimary }}>
+                        <p
+                          className="text-sm leading-relaxed"
+                          style={{ color: colors.textPrimary, whiteSpace: 'pre-wrap' }}
+                        >
                           {record.vaccinations}
                         </p>
                       </div>
