@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase'
 import type { MedicalRecord } from '../types/index'
+import { createAuditLog } from './auditLogs'
 
 export async function getMedicalRecords(petId: string): Promise<MedicalRecord[]> {
   const { data, error } = await supabase
@@ -34,6 +35,18 @@ export async function createMedicalRecord(
     .single()
 
   if (error) throw error
+
+  // Log the creation
+  await createAuditLog(
+    petId,
+    data.id,
+    createdBy,
+    'created',
+    'medical_record',
+    undefined,
+    visitReason || 'New medical record'
+  )
+
   return data
 }
 
@@ -42,7 +55,10 @@ export async function updateMedicalRecord(
   notes: string,
   visitDate: string,
   visitReason: string,
-  vaccinations: string
+  vaccinations: string,
+  petId: string,
+  editedBy: string,
+  oldRecord: MedicalRecord
 ): Promise<MedicalRecord> {
   const { data, error } = await supabase
     .from('medical_records')
@@ -59,10 +75,40 @@ export async function updateMedicalRecord(
   if (error) throw error
   if (!data || data.length === 0) throw new Error('No data returned')
 
+  // Log each changed field
+  if (oldRecord.notes !== notes) {
+    await createAuditLog(petId, id, editedBy, 'updated', 'notes', oldRecord.notes ?? '', notes)
+  }
+  if (oldRecord.visit_date !== visitDate) {
+    await createAuditLog(petId, id, editedBy, 'updated', 'visit_date', oldRecord.visit_date ?? '', visitDate)
+  }
+  if (oldRecord.visit_reason !== visitReason) {
+    await createAuditLog(petId, id, editedBy, 'updated', 'visit_reason', oldRecord.visit_reason ?? '', visitReason)
+  }
+  if (oldRecord.vaccinations !== vaccinations) {
+    await createAuditLog(petId, id, editedBy, 'updated', 'vaccinations', oldRecord.vaccinations ?? '', vaccinations)
+  }
+
   return data[0]
 }
 
-export async function deleteMedicalRecord(id: string): Promise<void> {
+export async function deleteMedicalRecord(
+  id: string,
+  petId: string,
+  editedBy: string,
+  visitReason: string
+): Promise<void> {
+  // Log the deletion first before deleting
+  await createAuditLog(
+    petId,
+    id,
+    editedBy,
+    'deleted',
+    'medical_record',
+    visitReason || 'Medical record',
+    undefined
+  )
+
   const { error } = await supabase
     .from('medical_records')
     .delete()
