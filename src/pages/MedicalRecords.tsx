@@ -120,7 +120,7 @@ export default function MedicalRecords() {
 
   async function handleUpdateRecord(e: React.FormEvent): Promise<void> {
     e.preventDefault()
-    if (!editingRecord) return
+    if (!editingRecord || !profile || !petId) return
     setEditSubmitting(true)
     setError('')
 
@@ -130,7 +130,10 @@ export default function MedicalRecords() {
         editNotes,
         editVisitDate,
         editVisitReason,
-        editVaccinations
+        editVaccinations,
+        petId,
+        profile.id,
+        editingRecord
       )
       setRecords(prev => prev.map(r => r.id === updated.id ? updated : r))
       cancelEditing()
@@ -142,8 +145,15 @@ export default function MedicalRecords() {
   }
 
   async function handleDeleteRecord(id: string): Promise<void> {
+    if (!profile || !petId) return
+    const record = records.find(r => r.id === id)
     try {
-      await deleteMedicalRecord(id)
+      await deleteMedicalRecord(
+        id,
+        petId,
+        profile.id,
+        record?.visit_reason ?? ''
+      )
       setRecords(prev => prev.filter(r => r.id !== id))
     } catch (err) {
       setError('Failed to delete record.')
@@ -297,12 +307,19 @@ export default function MedicalRecords() {
               ) : (
                 <span className="text-3xl">🐾</span>
               )}
-              <div>
+              <div className="flex-1">
                 <p className="font-semibold" style={{ color: colors.textPrimary }}>{pet.name}</p>
                 <p className="text-sm capitalize" style={{ color: colors.textSecondary }}>
                   {pet.species}
                 </p>
               </div>
+              <button
+                onClick={() => navigate(`/pets/${petId}/audit`)}
+                className="text-xs font-medium px-3 py-2 rounded-lg transition-opacity hover:opacity-90 text-white"
+                style={{ backgroundColor: colors.indigo }}
+              >
+                📝 Audit Log
+              </button>
             </div>
           )}
 
