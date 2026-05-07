@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Pets from './pages/Pets'
 import MedicalRecords from './pages/MedicalRecords'
+import AuditLog from './pages/AuditLog'
 import Specialists from './pages/Specialists'
 import Services from './pages/Services'
 import Shop from './pages/Shop'
@@ -45,6 +46,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Route path="/pets/:petId/records" element={
           <RoleGuard>
             <MedicalRecords />
+          </RoleGuard>
+        }/>
+        <Route path="/pets/:petId/audit" element={
+          <RoleGuard>
+            <AuditLog />
           </RoleGuard>
         }/>
         <Route path="/testimonials" element={
