@@ -38,6 +38,8 @@ export default function Dashboard() {
           </div>
 
           <div className="mt-6 space-y-3">
+
+            {/* Pet Profiles */}
             <button
               onClick={() => navigate('/pets')}
               className="w-full p-4 rounded-xl border text-left transition-opacity hover:opacity-80"
@@ -49,6 +51,7 @@ export default function Dashboard() {
               </p>
             </button>
 
+            {/* Medical Records */}
             <button
               onClick={() => navigate('/pets')}
               className="w-full p-4 rounded-xl border text-left transition-opacity hover:opacity-80"
@@ -60,6 +63,19 @@ export default function Dashboard() {
               </p>
             </button>
 
+            {/* Audit Log */}
+            <button
+              onClick={() => navigate('/pets')}
+              className="w-full p-4 rounded-xl border text-left transition-opacity hover:opacity-80"
+              style={{ backgroundColor: colors.bg, borderColor: colors.border }}
+            >
+              <p className="font-medium" style={{ color: colors.textPrimary }}>📝 Audit Log</p>
+              <p className="text-sm mt-1" style={{ color: colors.textSecondary }}>
+                View change history for pet medical records
+              </p>
+            </button>
+
+            {/* Testimonials */}
             <button
               onClick={() => navigate('/testimonials')}
               className="w-full p-4 rounded-xl border text-left transition-opacity hover:opacity-80"
@@ -71,13 +87,6 @@ export default function Dashboard() {
               </p>
             </button>
 
-            <div
-              className="w-full p-4 rounded-xl border text-left opacity-40"
-              style={{ backgroundColor: colors.bg, borderColor: colors.border }}
-            >
-              <p className="font-medium" style={{ color: colors.textPrimary }}>📝 Audit Log</p>
-              <p className="text-sm mt-1" style={{ color: colors.textSecondary }}>Coming in Week 4</p>
-            </div>
           </div>
         </div>
       </div>
