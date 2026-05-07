@@ -53,7 +53,7 @@ function formatFieldName(field: string | null): string {
 
 export default function AuditLog() {
   const { petId } = useParams<{ petId: string }>()
-  const { profile } = useAuth()
+  const { } = useAuth()
   const navigate = useNavigate()
 
   const [pet, setPet] = useState<Pet | null>(null)
